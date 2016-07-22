@@ -10,6 +10,6 @@ export default class AssetLoadError extends LoadError {
   }
 
   retryLoad() {
-    return this._retry || (this._retry = this.loader.loadAsset(this.asset, RETRY_LOAD_SECRET));
+    return this._invokeAndCache('loadAsset', this.asset, RETRY_LOAD_SECRET);
   }
 }

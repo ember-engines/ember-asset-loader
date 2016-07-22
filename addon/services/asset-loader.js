@@ -27,6 +27,27 @@ function createLoadElement(tag, load, error) {
 }
 
 /**
+ * Merges two manifests' bundles together and returns new manifest.
+ *
+ * @param {AssetManifest} input
+ * @param {AssetManifest} manifest
+ * @return {AssetManifest} output
+ */
+function reduceManifestBundles(input, manifest) {
+  // If manifest doesn't have any bundles, then no reducing to do
+  if (!manifest.bundles) {
+    return input;
+  }
+
+  // Merge the bundles together, checking for collisions
+  return Object.keys(manifest.bundles).reduce((output, bundle) => {
+    Ember.assert(`The bundle "${bundle}" already exists.`, !output.bundles[bundle]);
+    output.bundles[bundle] = manifest.bundles[bundle];
+    return output;
+  }, input);
+}
+
+/**
  * A Service class to load additional assets into the Ember application.
  *
  * @class AssetLoader
@@ -50,19 +71,7 @@ export default Ember.Service.extend({
    */
   pushManifest(manifest) {
     this.__manifests.push(manifest);
-
-    // TODO: Cleanup!
-    this.__manifest = this.__manifests.reduce((output, manifest) => {
-      if (!manifest.bundles) {
-        return output;
-      }
-
-      return Object.keys(manifest.bundles).reduce((output, bundle) => {
-        Ember.assert(`The bundle "${bundle}" already exists.`, !output.bundles[bundle]);
-        output.bundles[bundle] = manifest.bundles[bundle];
-        return output;
-      }, output);
-    }, { bundles: {} });
+    this.__manifest = this.__manifests.reduce(reduceManifestBundles, { bundles: {} });
   },
 
   /**
@@ -171,7 +180,7 @@ export default Ember.Service.extend({
   },
 
   _setInCache(type, key, value) {
-    return this.__cache[type][key] = value;
+    return (this.__cache[type][key] = value);
   },
 
   /**

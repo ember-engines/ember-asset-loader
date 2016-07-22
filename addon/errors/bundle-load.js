@@ -10,6 +10,6 @@ export default class BundleLoadError extends LoadError {
   }
 
   retryLoad() {
-    return this._retry || (this._retry = this.loader.loadBundle(this.bundleName, RETRY_LOAD_SECRET));
+    return this._invokeAndCache('loadBundle', this.bundleName, RETRY_LOAD_SECRET);
   }
 }

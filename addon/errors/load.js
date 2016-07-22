@@ -12,4 +12,8 @@ export default class LoadError extends Error {
   retryLoad() {
     throw new Error(`You must define a behavior for 'retryLoad' in a subclass.`);
   }
+
+  _invokeAndCache(method, ...args) {
+    return this._retry || (this._retry = this.loader[method](...args));
+  }
 }

@@ -1,9 +1,9 @@
-import skipIfPhantom from '../helpers/phantom-skip';
+import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
 moduleForAcceptance('Acceptance | asset-load');
 
-skipIfPhantom('visiting a route which loads a bundle', function(assert) {
+test('visiting a route which loads a bundle', function(assert) {
   assert.expect(9);
 
   const container = document.getElementById('ember-testing');

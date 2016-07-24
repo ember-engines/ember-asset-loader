@@ -3,7 +3,13 @@ import { moduleFor, test } from 'ember-qunit';
 
 function noop() {}
 function shouldNotHappen(assert) {
-  return () => assert.ok(false, 'callback should not happen');
+  return (reason) => {
+    console.log(reason);
+    assert.ok(false, 'callback should not happen');
+  };
+}
+function shouldHappen(assert) {
+  return () => assert.ok(true, 'callback should happen');
 }
 
 moduleFor('service:asset-loader', 'Unit | Service | asset-loader');
@@ -246,6 +252,41 @@ test('loadAsset() - retrying a load twice returns the same promise', function(as
       return firstRetry;
     }
   ).catch(noop);
+});
+
+test('loadAsset() - js - handles successful load', function(assert) {
+  const service = this.subject();
+  const asset = { type: 'js', uri: '/unit-test.js' };
+
+  return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+});
+
+test('loadAsset() - js - handles failed load', function(assert) {
+  const service = this.subject();
+  const asset = { type: 'js', uri: '/unit-test.jsss' };
+
+  return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+});
+
+test('loadAsset() - css - handles successful load', function(assert) {
+  const service = this.subject();
+  const asset = { type: 'css', uri: '/unit-test.css' };
+
+  return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+});
+
+test('loadAsset() - css - handles failed load', function(assert) {
+  const service = this.subject();
+  const asset = { type: 'css', uri: '/unit-test.csss' };
+
+  // Since onload/onerror support is spotty for link elements, we allow
+  // non-Chrome browsers to either resolve or reject (they should do something).
+  var isChrome = !!window.chrome;
+  if (isChrome) {
+    return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+  } else {
+    return service.loadAsset(asset).then(shouldHappen(assert), shouldHappen(assert));
+  }
 });
 
 test('defineLoader() - overwrites existing asset loader types', function(assert) {

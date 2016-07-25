@@ -10,8 +10,9 @@ cache:
     - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=default PHANTOM=phantomjs PHANTOM_V=1.*
-  - EMBER_TRY_SCENARIO=default PHANTOM=phantomjs-prebuilt PHANTOM_V=*
+  - PHANTOM=phantomjs PHANTOM_V=1.* SCRIPT="test"
+  - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test"
+  - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test:sauce"
 
 matrix:
   fast_finish: true
@@ -32,7 +33,5 @@ install:
   - bower install
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
   - npm run test:node
-  - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+  - npm run $SCRIPT

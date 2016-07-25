@@ -4,13 +4,12 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 moduleForAcceptance('Acceptance | asset-load');
 
 test('visiting a route which loads a bundle', function(assert) {
-  assert.expect(9);
+  assert.expect(7);
 
   const container = document.getElementById('ember-testing');
-
-  const containerStyle = window.getComputedStyle(container);
-  assert.equal(containerStyle.backgroundColor, 'rgba(0, 0, 0, 0)', 'background color correctly set before css load');
-  assert.equal(containerStyle.color, 'rgb(0, 0, 0)', 'color correctly set before css load');
+  const originalContainerStyle = window.getComputedStyle(container);
+  const originalBackgroundColor = originalContainerStyle.backgroundColor;
+  const originalColor = originalContainerStyle.color;
 
   const containerText = container.innerText;
   assert.equal(containerText, '', 'test container is empty before load');
@@ -30,7 +29,7 @@ test('visiting a route which loads a bundle', function(assert) {
     assert.ok(containerText.indexOf(testScriptText) < containerText.indexOf(routeText), 'test script was executed before route load');
 
     const containerStyle = window.getComputedStyle(container);
-    assert.equal(containerStyle.backgroundColor, 'rgb(51, 51, 51)', 'background color correctly set after css load');
-    assert.equal(containerStyle.color, 'rgb(255, 255, 255)', 'color correctly set after css load');
+    assert.notEqual(containerStyle.backgroundColor, originalBackgroundColor, 'background color is different after css load');
+    assert.notEqual(containerStyle.color, originalColor, 'color is different after css load');
   });
 });

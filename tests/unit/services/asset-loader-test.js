@@ -3,10 +3,7 @@ import { moduleFor, test } from 'ember-qunit';
 
 function noop() {}
 function shouldNotHappen(assert) {
-  return (reason) => {
-    console.log(reason);
-    assert.ok(false, 'callback should not happen');
-  };
+  return () => assert.ok(false, 'callback should not happen');
 }
 function shouldHappen(assert) {
   return () => assert.ok(true, 'callback should happen');
@@ -255,6 +252,8 @@ test('loadAsset() - retrying a load twice returns the same promise', function(as
 });
 
 test('loadAsset() - js - handles successful load', function(assert) {
+  assert.expect(1);
+
   const service = this.subject();
   const asset = { type: 'js', uri: '/unit-test.js' };
 
@@ -262,6 +261,8 @@ test('loadAsset() - js - handles successful load', function(assert) {
 });
 
 test('loadAsset() - js - handles failed load', function(assert) {
+  assert.expect(1);
+
   const service = this.subject();
   const asset = { type: 'js', uri: '/unit-test.jsss' };
 
@@ -269,6 +270,8 @@ test('loadAsset() - js - handles failed load', function(assert) {
 });
 
 test('loadAsset() - css - handles successful load', function(assert) {
+  assert.expect(1);
+
   const service = this.subject();
   const asset = { type: 'css', uri: '/unit-test.css' };
 
@@ -276,12 +279,14 @@ test('loadAsset() - css - handles successful load', function(assert) {
 });
 
 test('loadAsset() - css - handles failed load', function(assert) {
+  assert.expect(1);
+
   const service = this.subject();
   const asset = { type: 'css', uri: '/unit-test.csss' };
 
   // Since onload/onerror support is spotty for link elements, we allow
   // non-Chrome browsers to either resolve or reject (they should do something).
-  var isChrome = !!window.chrome;
+  var isChrome = !!window.chrome && window.navigator.vendor === 'Google Inc.';
   if (isChrome) {
     return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
   } else {

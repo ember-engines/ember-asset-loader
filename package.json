@@ -43,7 +43,12 @@
     "ember-addon"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6"
+    "broccoli-caching-writer": "^3.0.0",
+    "broccoli-funnel": "^1.0.3",
+    "broccoli-merge-trees": "^1.1.2",
+    "ember-cli-babel": "^5.1.6",
+    "fs-extra": "^0.30.0",
+    "walk-sync": "^0.2.7"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

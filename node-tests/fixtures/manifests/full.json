@@ -1,0 +1,40 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        {
+          "uri": "/assets/blog/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/assets/blog/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/assets/blog/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/assets/blog/vendor.js",
+          "type": "js"
+        }
+      ],
+      "dependencies": []
+    },
+    "shared": {
+      "assets": [
+        {
+          "uri": "/assets/blog/shared/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/assets/blog/shared/addon.js",
+          "type": "js"
+        }
+      ],
+      "dependencies": [
+        "blog"
+      ]
+    }
+  }
+}

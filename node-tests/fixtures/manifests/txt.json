@@ -1,0 +1,18 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        { "uri": "/assets/blog/secret.txt", "type": "txt" }
+      ],
+      "dependencies": []
+    },
+    "shared": {
+      "assets": [
+        { "uri": "/assets/blog/shared/secret.txt", "type": "txt" }
+      ],
+      "dependencies": [
+        "blog"
+      ]
+    }
+  }
+}

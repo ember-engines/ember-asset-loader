@@ -9,7 +9,8 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "test:node": "mocha node-tests"
   },
   "repository": "https://github.com/trentmwillis/ember-asset-loader",
   "engines": {

@@ -1,0 +1,22 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        { "uri": "/resources/blog/engine.css", "type": "css" },
+        { "uri": "/resources/blog/engine.js", "type": "js" },
+        { "uri": "/resources/blog/vendor.css", "type": "css" },
+        { "uri": "/resources/blog/vendor.js", "type": "js" }
+      ],
+      "dependencies": []
+    },
+    "shared": {
+      "assets": [
+        { "uri": "/resources/blog/shared/addon.css", "type": "css" },
+        { "uri": "/resources/blog/shared/addon.js", "type": "js" }
+      ],
+      "dependencies": [
+        "blog"
+      ]
+    }
+  }
+}

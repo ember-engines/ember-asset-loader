@@ -8,22 +8,12 @@ module.exports = {
   name: 'ember-asset-loader',
 
   /**
-   * Generate an asset manifest from the "all" tree.
-   */
-  postprocessTree: function(type, tree) {
-    if (type === 'all') {
-      tree = require('./lib/generate-asset-manifest')(tree); // eslint-disable-line global-require
-    }
-
-    return tree;
-  },
-
-  /**
    * Insert a meta tag to hold the manifest in the DOM. We won't insert the
    * manifest until after postprocessing so the content is a placeholder value.
    */
   contentFor: function(type, config) {
-    if (type === 'head-footer') {
+    var options = this.app && this.app.options && this.app.options.assetLoader;
+    if (type === 'head-footer' && !(options && options.noManifest)) {
       var metaName = config.modulePrefix + '/asset-manifest';
       return '<meta name="' + metaName + '" content="%GENERATED_ASSET_MANIFEST%" />';
     }
@@ -34,8 +24,21 @@ module.exports = {
    * We do this in both the app's index and test's index.
    */
   postBuild: function(result) {
+    var options = this.app && this.app.options && this.app.options.assetLoader;
+    if (options && options.noManifest) {
+      return;
+    }
+
     var manifestFile = path.join(result.directory, 'asset-manifest.json');
-    var manifest = fs.readJsonSync(manifestFile);
+    var manifest;
+
+    try {
+      manifest = fs.readJsonSync(manifestFile);
+    } catch (error) {
+      console.warn('Warning: Unable to read asset-manifest.json from build with error: ' + error)
+      console.warn('Warning: Proceeding without generated manifest; you will need to manually provide a manifest to the Asset Loader Service to load bundles at runtime. If this was intentional you can turn this message off via the `noManifest` flag.');
+      manifest = { bundles: {} };
+    }
 
     var escapedManifest = escape(JSON.stringify(manifest));
 

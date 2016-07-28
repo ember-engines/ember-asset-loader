@@ -51,6 +51,14 @@
         }
       ]
     },
+    "derp": {
+      "assets": [
+        { "uri": "/this.txt", "type": "txt" }
+      ],
+      "dependencies": [
+        "herp"
+      ]
+    },
     "shared": {
       "assets": [
         {

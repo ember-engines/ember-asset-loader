@@ -2,20 +2,73 @@
   "bundles": {
     "blog": {
       "assets": [
-        { "uri": "/resources/blog/engine.css", "type": "css" },
-        { "uri": "/resources/blog/engine.js", "type": "js" },
-        { "uri": "/resources/blog/vendor.css", "type": "css" },
-        { "uri": "/resources/blog/vendor.js", "type": "js" }
+        {
+          "uri": "/resources/blog/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/blog/assets/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/resources/blog/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/blog/assets/vendor.js",
+          "type": "js"
+        },
+        {
+          "uri": "/resources/blog/shared/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/blog/shared/addon.js",
+          "type": "js"
+        }
       ],
-      "dependencies": []
+      "dependencies": [
+        "shared"
+      ]
+    },
+    "chat": {
+      "assets": [
+        {
+          "uri": "/resources/chat/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/chat/assets/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/resources/chat/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/chat/assets/vendor.js",
+          "type": "js"
+        }
+      ]
     },
     "shared": {
       "assets": [
-        { "uri": "/resources/blog/shared/addon.css", "type": "css" },
-        { "uri": "/resources/blog/shared/addon.js", "type": "js" }
-      ],
-      "dependencies": [
-        "blog"
+        {
+          "uri": "/resources/shared/assets/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/shared/assets/addon.js",
+          "type": "js"
+        },
+        {
+          "uri": "/resources/shared/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/resources/shared/assets/vendor.js",
+          "type": "js"
+        }
       ]
     }
   }

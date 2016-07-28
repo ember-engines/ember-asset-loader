@@ -2,17 +2,20 @@
   "bundles": {
     "blog": {
       "assets": [
-        { "uri": "/assets/blog/secret.txt", "type": "txt" }
-      ],
-      "dependencies": []
-    },
-    "shared": {
-      "assets": [
-        { "uri": "/assets/blog/shared/secret.txt", "type": "txt" }
+        { "uri": "/bundles/blog/assets/secret.txt", "type": "txt" },
+        { "uri": "/bundles/blog/shared/secret.txt", "type": "txt" }
       ],
       "dependencies": [
-        "blog"
+        "shared"
       ]
+    },
+    "chat": {
+      "assets": [
+        { "uri": "/bundles/chat/assets/secret.txt", "type": "txt" }
+      ]
+    },
+    "shared": {
+      "assets": []
     }
   }
 }

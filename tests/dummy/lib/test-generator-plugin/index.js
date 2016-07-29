@@ -1,16 +1,11 @@
 /*jshint node:true*/
-module.exports = {
+var ManifestGenerator = require('../../../../lib/manifest-generator');
+
+module.exports = ManifestGenerator.extend({
   name: 'test-generator-plugin',
 
-  postprocessTree: function(type, tree) {
-    if (type === 'all') {
-      var generateAssetManifest = require('../../../../lib/generate-asset-manifest');
-      return generateAssetManifest(tree, {
-        bundlesLocation: 'test-dist',
-        supportedTypes: [ 'js', 'css' ]
-      });
-    }
-
-    return tree;
+  manifestOptions: {
+    bundlesLocation: 'test-dist',
+    supportedTypes: [ 'js', 'css' ]
   }
-};
+});

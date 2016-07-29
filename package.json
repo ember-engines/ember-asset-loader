@@ -10,7 +10,8 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:each",
-    "test:node": "mocha node-tests"
+    "test:node": "mocha node-tests",
+    "prepublish": "./bin/install-test-addons.sh"
   },
   "repository": "https://github.com/trentmwillis/ember-asset-loader",
   "engines": {
@@ -40,7 +41,8 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "loader.js": "^4.0.1",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "test-generator-plugin": "file:./tests/dummy/lib/test-generator-plugin"
   },
   "keywords": [
     "ember-addon"

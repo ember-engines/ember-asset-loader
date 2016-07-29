@@ -1,0 +1,83 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        {
+          "uri": "/bundles/blog/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/blog/assets/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/blog/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/blog/assets/vendor.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/blog/shared/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/blog/shared/addon.js",
+          "type": "js"
+        }
+      ],
+      "dependencies": [
+        "shared"
+      ]
+    },
+    "chat": {
+      "assets": [
+        {
+          "uri": "/bundles/chat/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/chat/assets/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/chat/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/chat/assets/vendor.js",
+          "type": "js"
+        }
+      ]
+    },
+    "derp": {
+      "assets": [
+        { "uri": "/this.txt", "type": "txt" }
+      ],
+      "dependencies": [
+        "herp"
+      ]
+    },
+    "shared": {
+      "assets": [
+        {
+          "uri": "/bundles/shared/assets/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/shared/assets/addon.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/shared/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/shared/assets/vendor.js",
+          "type": "js"
+        }
+      ]
+    }
+  }
+}

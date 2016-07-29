@@ -3,37 +3,72 @@
     "blog": {
       "assets": [
         {
-          "uri": "/assets/blog/engine.css",
+          "uri": "/bundles/blog/assets/engine.css",
           "type": "css"
         },
         {
-          "uri": "/assets/blog/engine.js",
+          "uri": "/bundles/blog/assets/engine.js",
           "type": "js"
         },
         {
-          "uri": "/assets/blog/vendor.css",
+          "uri": "/bundles/blog/assets/vendor.css",
           "type": "css"
         },
         {
-          "uri": "/assets/blog/vendor.js",
+          "uri": "/bundles/blog/assets/vendor.js",
           "type": "js"
-        }
-      ],
-      "dependencies": []
-    },
-    "shared": {
-      "assets": [
+        },
         {
-          "uri": "/assets/blog/shared/addon.css",
+          "uri": "/bundles/blog/shared/addon.css",
           "type": "css"
         },
         {
-          "uri": "/assets/blog/shared/addon.js",
+          "uri": "/bundles/blog/shared/addon.js",
           "type": "js"
         }
       ],
       "dependencies": [
-        "blog"
+        "shared"
+      ]
+    },
+    "chat": {
+      "assets": [
+        {
+          "uri": "/bundles/chat/assets/engine.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/chat/assets/engine.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/chat/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/chat/assets/vendor.js",
+          "type": "js"
+        }
+      ]
+    },
+    "shared": {
+      "assets": [
+        {
+          "uri": "/bundles/shared/assets/addon.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/shared/assets/addon.js",
+          "type": "js"
+        },
+        {
+          "uri": "/bundles/shared/assets/vendor.css",
+          "type": "css"
+        },
+        {
+          "uri": "/bundles/shared/assets/vendor.js",
+          "type": "js"
+        }
       ]
     }
   }

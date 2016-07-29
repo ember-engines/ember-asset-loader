@@ -10,9 +10,9 @@ describe('generate-asset-manifest', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
   var manifestsPath = path.join(fixturePath, 'manifests');
 
-  function verifyAssetManifest(manifestName, supportedTypes, prepend) {
+  function verifyAssetManifest(manifestName, options) {
     var inputTree = path.join(fixturePath, 'main-test');
-    var assetManifestTree = generateAssetManifest(inputTree, supportedTypes, prepend);
+    var assetManifestTree = generateAssetManifest(inputTree, options);
     var builder = new broccoli.Builder(assetManifestTree);
 
     return builder.build().then(function _verifyAssetManifest(results) {
@@ -38,10 +38,33 @@ describe('generate-asset-manifest', function() {
   });
 
   it('adds an asset manifest with custom supportedTypes', function() {
-    return verifyAssetManifest('txt', [ 'txt' ]);
+    return verifyAssetManifest('txt', { supportedTypes: [ 'txt' ] });
   });
 
-  it('adds an asset manifest with a custom prepended path', function() {
-    return verifyAssetManifest('resources', undefined, '/resources/');
+  it('uses a custom bundlesLocation and properly prepends it to generated URIs', function() {
+    return verifyAssetManifest('engines', { bundlesLocation: 'engines-dist' });
+  });
+
+  it('merges an existing manifest into the new one', function() {
+    var inputTree = path.join(fixturePath, 'existing-test');
+    var assetManifestTree = generateAssetManifest(inputTree);
+    var builder = new broccoli.Builder(assetManifestTree);
+
+    return builder.build().then(function _verifyAssetManifest(results) {
+      var output = results.directory;
+      var originalFiles = walk(inputTree);
+      var outputFiles = walk(output);
+
+      assert.equal(outputFiles.length, originalFiles.length, 'output files has same number of files as originally');
+      assert.notEqual(originalFiles.indexOf('asset-manifest.json'), -1, 'original files does contain an asset manifest');
+      assert.notEqual(outputFiles.indexOf('asset-manifest.json'), -1, 'output files does contain an asset manifest');
+
+      var manifestFile = path.join(output, 'asset-manifest.json');
+      var manifest = fs.readJsonSync(manifestFile);
+      var expectedManifest = fs.readJsonSync(path.join(manifestsPath, 'full-plus-existing.json'));
+      assert.deepEqual(manifest, expectedManifest);
+
+      builder.cleanup();
+    });
   });
 });

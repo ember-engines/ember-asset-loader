@@ -35,8 +35,8 @@ module.exports = {
     try {
       manifest = fs.readJsonSync(manifestFile);
     } catch (error) {
-      console.warn('Warning: Unable to read asset-manifest.json from build with error: ' + error)
-      console.warn('Warning: Proceeding without generated manifest; you will need to manually provide a manifest to the Asset Loader Service to load bundles at runtime. If this was intentional you can turn this message off via the `noManifest` flag.');
+      console.warn('\n\nWarning: Unable to read asset-manifest.json from build with error: ' + error)
+      console.warn('Warning: Proceeding without generated manifest; you will need to manually provide a manifest to the Asset Loader Service to load bundles at runtime. If this was intentional you can turn this message off via the `noManifest` flag.\n\n');
       manifest = { bundles: {} };
     }
 

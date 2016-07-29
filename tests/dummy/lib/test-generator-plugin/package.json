@@ -1,0 +1,7 @@
+{
+  "name": "test-generator-plugin",
+  "version": "0.0.0",
+  "keywords": [
+    "ember-addon"
+  ]
+}

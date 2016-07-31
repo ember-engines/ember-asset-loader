@@ -10,9 +10,12 @@ cache:
     - node_modules
 
 env:
-  - PHANTOM=phantomjs PHANTOM_V=1.* SCRIPT="test"
-  - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test"
-  - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test:sauce"
+  global:
+    - AFTER_SCRIPT="true"
+  matrix:
+    - PHANTOM=phantomjs PHANTOM_V=1.* SCRIPT="test"
+    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test"
+    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test:sauce" AFTER_SCRIPT="ember sauce:disconnect"
 
 matrix:
   fast_finish: true
@@ -35,3 +38,6 @@ install:
 script:
   - npm run test:node
   - npm run $SCRIPT
+
+after_script:
+  - $AFTER_SCRIPT

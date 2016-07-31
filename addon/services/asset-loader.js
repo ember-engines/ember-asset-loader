@@ -258,7 +258,8 @@ export default Ember.Service.extend({
             if (sheet.href === resolvedHref) {
               // Unfortunately we have no way of knowing if the load was
               // successful or not, so we always resolve.
-              return resolve();
+              setTimeout(resolve);
+              return;
             }
           }
 

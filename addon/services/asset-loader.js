@@ -238,12 +238,34 @@ export default Ember.Service.extend({
 
     css(uri) {
       return new RSVP.Promise((resolve, reject) => {
+        // Try using the default onload/onerror handlers...
         const link = createLoadElement('link', resolve, reject);
 
         link.rel = 'stylesheet';
         link.href = uri;
 
         document.head.appendChild(link);
+
+        // In case the browser doesn't fire onload/onerror events, we poll the
+        // the list of stylesheets to see when it loads...
+        function checkSheetLoad() {
+          const resolvedHref = link.href;
+          const stylesheets = document.styleSheets;
+          let i = stylesheets.length;
+
+          while (i--) {
+            const sheet = stylesheets[i];
+            if (sheet.href === resolvedHref) {
+              // Unfortunately we have no way of knowing if the load was
+              // successful or not, so we always resolve.
+              return resolve();
+            }
+          }
+
+          setTimeout(checkSheetLoad);
+        }
+
+        setTimeout(checkSheetLoad);
       });
     }
   }

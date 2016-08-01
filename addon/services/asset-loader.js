@@ -2,6 +2,8 @@ import RSVP from 'rsvp';
 import Ember from 'ember';
 import AssetLoadError from '../errors/asset-load';
 import BundleLoadError from '../errors/bundle-load';
+import JsLoader from '../loaders/js';
+import CssLoader from '../loaders/css';
 
 // PRIVATE STUFF, YOU SHOULD NOT NORMALLY DO THIS
 const symbol = Ember.__loader.require('ember-metal/symbol').default;
@@ -9,25 +11,7 @@ const symbol = Ember.__loader.require('ember-metal/symbol').default;
 export const RETRY_LOAD_SECRET = symbol('RETRY_LOAD_SECRET');
 
 /**
- * Creates a DOM element with the specified onload and onerror handlers.
- *
- * @method createLoadElement
- * @param {String} tag
- * @param {Function} load
- * @paeam {Function} error
- * @return {HTMLElement} el
- */
-function createLoadElement(tag, load, error) {
-  const el = document.createElement(tag);
-
-  el.onload = load;
-  el.onerror = error;
-
-  return el;
-}
-
-/**
- * Merges two manifests' bundles together and returns new manifest.
+ * Merges two manifests' bundles together and returns a new manifest.
  *
  * @param {AssetManifest} input
  * @param {AssetManifest} manifest
@@ -61,13 +45,17 @@ export default Ember.Service.extend({
   init() {
     this.__manifests = [];
     this._setupCache();
+    this._initAssetLoaders();
   },
 
   /**
+   * Adds a manifest to the service by merging its bundles with any previously
+   * added manifests. Bundle collisions result in an error being thrown.
+   *
    * @public
    * @method pushManifest
    * @param {AssetManifest} manifest
-   * @return {AssetManifest} manifest
+   * @return {Void}
    */
   pushManifest(manifest) {
     this.__manifests.push(manifest);
@@ -118,6 +106,9 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Loads a single asset into the application. Expects a given asset to specify
+   * a URI and type.
+   *
    * @public
    * @method loadAsset
    * @param {Object} asset
@@ -147,11 +138,22 @@ export default Ember.Service.extend({
     return this._setInCache('asset', cacheKey, assetWithFail);
   },
 
+  /**
+   * Define a loader function for assets of a specified type. Any previously
+   * defined loaders for that type will be overriden.
+   *
+   * @public
+   * @param {String} type
+   * @param {Funciton} loader
+   * @return {Void}
+   */
   defineLoader(type, loader) {
     this.__assetLoaders[type] = loader;
   },
 
   /**
+   * Gets the current, reduced manifest.
+   *
    * @private
    * @method getManifest
    * @return {AssetManifest} manifest
@@ -164,12 +166,28 @@ export default Ember.Service.extend({
     return manifest;
   },
 
+  /**
+   * Sets up the cache used to store Promise values for asset/bundle requests.
+   *
+   * @private
+   * @return {Void}
+   */
   _setupCache() {
     this.__cache = {};
     this.__cache.asset = {};
     this.__cache.bundle = {};
   },
 
+  /**
+   * Gets a value from the cache according to the type and key it was stored
+   * under. Optionally, evicts the cached value and returns undefined.
+   *
+   * @private
+   * @param {String} type
+   * @param {String} key
+   * @param {Boolean} evict
+   * @return {Any}
+   */
   _getFromCache(type, key, evict) {
     if (evict) {
       this.__cache[type][key] = undefined;
@@ -179,11 +197,22 @@ export default Ember.Service.extend({
     return this.__cache[type][key];
   },
 
+  /**
+   * Sets a value in the cache under a type and key.
+   *
+   * @private
+   * @param {String} type
+   * @param {String} key
+   * @param {Any} value
+   * @return {Any}
+   */
   _setInCache(type, key, value) {
     return (this.__cache[type][key] = value);
   },
 
   /**
+   * Gets the info for a bundle from the reduced manifest.
+   *
    * @private
    * @method _getBundle
    * @param {String} name
@@ -204,6 +233,8 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Gets the asset loader method for a specified type.
+   *
    * @private
    * @method _getAssetLoader
    * @param {String} type
@@ -218,6 +249,15 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Initializes the __assetLoaders object and defines our default loaders.
+   */
+  _initAssetLoaders() {
+    this.__assetLoaders = {};
+    this.defineLoader('js', JsLoader);
+    this.defineLoader('css', CssLoader);
+  },
+
+  /**
    * Defines loader methods for various types of assets. Each loader is stored
    * under a key corresponding to the type of asset it loads.
    *
@@ -225,49 +265,5 @@ export default Ember.Service.extend({
    * @property __assetLoaders
    * @type {Object}
    */
-  __assetLoaders: {
-    js(uri) {
-      return new RSVP.Promise((resolve, reject) => {
-        const script = createLoadElement('script', resolve, reject);
-
-        script.src = uri;
-
-        document.head.appendChild(script);
-      });
-    },
-
-    css(uri) {
-      return new RSVP.Promise((resolve, reject) => {
-        // Try using the default onload/onerror handlers...
-        const link = createLoadElement('link', resolve, reject);
-
-        link.rel = 'stylesheet';
-        link.href = uri;
-
-        document.head.appendChild(link);
-
-        // In case the browser doesn't fire onload/onerror events, we poll the
-        // the list of stylesheets to see when it loads...
-        function checkSheetLoad() {
-          const resolvedHref = link.href;
-          const stylesheets = document.styleSheets;
-          let i = stylesheets.length;
-
-          while (i--) {
-            const sheet = stylesheets[i];
-            if (sheet.href === resolvedHref) {
-              // Unfortunately we have no way of knowing if the load was
-              // successful or not, so we always resolve.
-              setTimeout(resolve);
-              return;
-            }
-          }
-
-          setTimeout(checkSheetLoad);
-        }
-
-        setTimeout(checkSheetLoad);
-      });
-    }
-  }
+  __assetLoaders: undefined
 });

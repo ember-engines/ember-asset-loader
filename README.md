@@ -58,6 +58,19 @@ var app = new EmberApp(defaults, {
 });
 ```
 
+## Pre-loading Assets During Testing
+
+For test environments it is often useful to load all of the assets in a manifest upfront. You can do this by using the
+`preloadAssets` helper, like so:
+
+```js
+// tests/test-helper.js
+import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
+import manifest from 'app/asset-manifest';
+
+preloadAssets(manifest);
+```
+
 ## Installation
 
 * `git clone https://github.com/trentmwillis/ember-asset-loader`

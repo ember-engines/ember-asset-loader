@@ -25,6 +25,8 @@ branches:
     - master
 
 before_install:
+  - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPXRyZW50bXdpbGxpcwo=`
+  - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9MjExZDUxOTAtNWQxYS00YzYzLWFhOGYtMjA1YmIzYzRlMGZmCg==`
   - npm config set spin false
   - npm install -g bower
   - bower --version

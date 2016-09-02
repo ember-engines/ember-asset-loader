@@ -2,6 +2,7 @@
 'use strict';
 
 var Funnel = require('broccoli-funnel');
+var findHost = require('./lib/utils/find-host');
 
 module.exports = {
   name: 'ember-asset-loader',
@@ -14,7 +15,7 @@ module.exports = {
    */
   treeForApp: function() {
     var tree = this._super.treeForApp.apply(this, arguments);
-    var app = this.app;
+    var app = findHost(this);
 
     if (app && app.options && app.options.assetLoader && app.options.assetLoader.noManifest) {
       tree = new Funnel(tree, {

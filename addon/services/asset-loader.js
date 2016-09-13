@@ -5,10 +5,7 @@ import BundleLoadError from '../errors/bundle-load';
 import JsLoader from '../loaders/js';
 import CssLoader from '../loaders/css';
 
-// PRIVATE STUFF, YOU SHOULD NOT NORMALLY DO THIS
-const symbol = Ember.__loader.require('ember-metal/symbol').default;
-
-export const RETRY_LOAD_SECRET = symbol('RETRY_LOAD_SECRET');
+export function RETRY_LOAD_SECRET() { }
 
 /**
  * Merges two manifests' bundles together and returns a new manifest.

@@ -56,6 +56,7 @@
     "ember-cli-babel": "^5.1.6",
     "exists-sync": "0.0.3",
     "fs-extra": "^0.30.0",
+    "object-assign": "^4.1.0",
     "walk-sync": "^0.2.7"
   },
   "ember-addon": {

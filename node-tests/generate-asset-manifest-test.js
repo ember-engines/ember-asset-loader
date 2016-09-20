@@ -20,9 +20,13 @@ describe('generate-asset-manifest', function() {
       var originalFiles = walk(inputTree);
       var outputFiles = walk(output);
 
-      assert.equal(outputFiles.length, originalFiles.length + 1, 'output files has one more file than originally');
+      assert.equal(outputFiles.length, originalFiles.length + 2, 'output files has two more files than originally');
+
       assert.equal(originalFiles.indexOf('asset-manifest.json'), -1, 'original files does not contain an asset manifest');
       assert.notEqual(outputFiles.indexOf('asset-manifest.json'), -1, 'output files does contain an asset manifest');
+
+      assert.equal(originalFiles.indexOf('assets/node-asset-manifest.js'), -1, 'original files does not contain a Node asset manifest module');
+      assert.notEqual(outputFiles.indexOf('assets/node-asset-manifest.js'), -1, 'output files does contain a Node asset manifest module');
 
       var manifestFile = path.join(output, 'asset-manifest.json');
       var manifest = fs.readJsonSync(manifestFile);
@@ -55,9 +59,13 @@ describe('generate-asset-manifest', function() {
       var originalFiles = walk(inputTree);
       var outputFiles = walk(output);
 
-      assert.equal(outputFiles.length, originalFiles.length, 'output files has same number of files as originally');
+      assert.equal(outputFiles.length, originalFiles.length + 1, 'output files has one more file than originally');
+
       assert.notEqual(originalFiles.indexOf('asset-manifest.json'), -1, 'original files does contain an asset manifest');
       assert.notEqual(outputFiles.indexOf('asset-manifest.json'), -1, 'output files does contain an asset manifest');
+
+      assert.equal(originalFiles.indexOf('assets/node-asset-manifest.js'), -1, 'original files does not contain a Node asset manifest module');
+      assert.notEqual(outputFiles.indexOf('assets/node-asset-manifest.js'), -1, 'output files does contain a Node asset manifest module');
 
       var manifestFile = path.join(output, 'asset-manifest.json');
       var manifest = fs.readJsonSync(manifestFile);

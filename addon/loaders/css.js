@@ -1,5 +1,5 @@
 import RSVP from 'rsvp';
-import { createLoadElement } from './utilities';
+import { createLoadElement, nodeLoader } from './utilities';
 
 /**
  * Default loader function for CSS assets. Loads them by inserting a link tag
@@ -13,7 +13,7 @@ import { createLoadElement } from './utilities';
  * @param {String} uri
  * @return {Promise}
  */
-export default function css(uri) {
+export default nodeLoader(function css(uri) {
   return new RSVP.Promise((resolve, reject) => {
     // Try using the default onload/onerror handlers...
     const link = createLoadElement('link', resolve, reject);
@@ -45,4 +45,4 @@ export default function css(uri) {
 
     setTimeout(checkSheetLoad);
   });
-}
+});

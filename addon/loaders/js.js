@@ -1,5 +1,5 @@
 import RSVP from 'rsvp';
-import { createLoadElement } from './utilities';
+import { createLoadElement, nodeLoader } from './utilities';
 
 /**
  * Default loader function for JS assets. Loads them by inserting a script tag
@@ -9,7 +9,7 @@ import { createLoadElement } from './utilities';
  * @param {String} uri
  * @return {Promise}
  */
-export default function js(uri) {
+export default nodeLoader(function js(uri) {
   return new RSVP.Promise((resolve, reject) => {
     const script = createLoadElement('script', resolve, reject);
 
@@ -17,4 +17,4 @@ export default function js(uri) {
 
     document.head.appendChild(script);
   });
-}
+});

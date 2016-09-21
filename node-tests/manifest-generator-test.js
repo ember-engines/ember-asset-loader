@@ -27,7 +27,7 @@ describe('manifest-generator', function() {
     it('returns a meta tag with a placeholder for head-footer', function() {
       var generator = createGenerator();
       var result = generator.contentFor('head-footer', { modulePrefix: 'dummy' });
-      assert.equal(result, '<meta name="dummy/asset-manifest" content="%GENERATED_ASSET_MANIFEST%" />');
+      assert.equal(result, '<meta name="dummy/config/asset-manifest" content="%GENERATED_ASSET_MANIFEST%" />');
     });
 
     it('returns nothing when using the noManifest option', function() {

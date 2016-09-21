@@ -1,4 +1,4 @@
-import manifest from '../asset-manifest';
+import manifest from '../config/asset-manifest';
 
 /**
  * Initializes the AssetLoader service with a generated asset-manifest.

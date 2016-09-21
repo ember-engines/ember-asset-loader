@@ -65,7 +65,7 @@ performance for your consumers. However, lazy loading assets on your server is n
 can actually have negative performance impact. Due to that, the recommendation is to pre-load all your assets in the
 server.
 
-Additionally, at build time we will generate a `node-asset-manifest` file that should be included in your SSR
+Additionally, at build time we will generate an `assets/node-asset-manifest.js` file that should be included in your SSR
 environment to ensure that your application can correctly access asset information.
 
 See the ["How to handle running in Node"](https://github.com/trentmwillis/ember-asset-loader/issues/21) issue for more
@@ -79,7 +79,7 @@ For test environments it is often useful to load all of the assets in a manifest
 ```js
 // tests/test-helper.js
 import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
-import manifest from 'app/asset-manifest';
+import manifest from 'app/config/asset-manifest';
 
 preloadAssets(manifest);
 ```

@@ -20,7 +20,7 @@ module.exports = {
     if (app && app.options && app.options.assetLoader && app.options.assetLoader.noManifest) {
       tree = new Funnel(tree, {
         exclude: [
-          'asset-manifest.js',
+          'config/asset-manifest.js',
           'instance-initializers/load-asset-manifest.js'
         ]
       });

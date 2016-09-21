@@ -2,7 +2,7 @@ var assert = require('assert');
 var metaHandler = require('../lib/meta-handler');
 
 function testStringGenerator(sourceJSON) {
-  return '<meta name="testing/asset-manifest" content="'+ metaHandler.escaper(sourceJSON) +'" />';
+  return '<meta name="testing/config/asset-manifest" content="'+ metaHandler.escaper(sourceJSON) +'" />';
 }
 
 describe('meta-handler', function() {

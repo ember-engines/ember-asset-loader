@@ -58,6 +58,19 @@ var app = new EmberApp(defaults, {
 });
 ```
 
+## Usage with FastBoot / Server-Side Rendering Solutions
+
+Using lazily loaded assets with a server-side rendering solution, such as FastBoot, is often desirable to maximize
+performance for your consumers. However, lazy loading assets on your server is not the same as on the client and
+can actually have negative performance impact. Due to that, the recommendation is to pre-load all your assets in the
+server.
+
+Additionally, at build time we will generate a `node-asset-manifest` file that should be included in your SSR
+environment to ensure that your application can correctly access asset information.
+
+See the ["How to handle running in Node"](https://github.com/trentmwillis/ember-asset-loader/issues/21) issue for more
+information.
+
 ## Pre-loading Assets During Testing
 
 For test environments it is often useful to load all of the assets in a manifest upfront. You can do this by using the

@@ -11,6 +11,10 @@ import { createLoadElement, nodeLoader } from './utilities';
  */
 export default nodeLoader(function js(uri) {
   return new RSVP.Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${uri}"]`)) {
+      return resolve();
+    }
+
     const script = createLoadElement('script', resolve, reject);
 
     script.src = uri;

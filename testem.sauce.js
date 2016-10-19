@@ -30,7 +30,7 @@ module.exports = {
         "-b",
         "microsoftedge",
         "-v",
-        "9",
+        "14",
         "--vi",
         "public",
         "-p",

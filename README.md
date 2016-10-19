@@ -58,6 +58,24 @@ var app = new EmberApp(defaults, {
 });
 ```
 
+### Generating Custom URIs
+
+Custom URIs are often needed due to serving assets from CDNs or another server that does not share the same root
+location as your application. Instead of having to write a custom Broccoli plugin or other build-time transform, you can
+specify a `generateURI` function as part of your application's options:
+
+```js
+var app = new EmberApp(defaults, {
+  assetLoader: {
+    generateURI: function(filePath) {
+      return 'http://cdn.io/' + filePath;
+    }
+  }
+});
+```
+
+The function receives the `filePath` for each asset and must return a string.
+
 ## Usage with FastBoot / Server-Side Rendering Solutions
 
 Using lazily loaded assets with a server-side rendering solution, such as FastBoot, is often desirable to maximize

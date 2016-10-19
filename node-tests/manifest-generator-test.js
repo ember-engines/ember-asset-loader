@@ -9,6 +9,12 @@ var metaHandler = require('../lib/meta-handler');
 
 describe('manifest-generator', function() {
   function createGenerator(options, outputPaths) {
+    outputPaths = outputPaths || {
+      app: {
+        html: 'index.html'
+      }
+    };
+
     var Addon = ManifestGenerator.extend({
       name: 'test',
       root: process.cwd(),
@@ -65,11 +71,13 @@ describe('manifest-generator', function() {
       assert.strictEqual(processedTree, inputTree);
     });
 
-    function verifyInsertedManifest(indexPath) {
+    function verifyInsertedManifest(expectedManifestPath, indexPath, generateURI) {
       var fixturePath = path.join(__dirname, 'fixtures');
       var inputTree = path.join(fixturePath, 'generator-test');
 
-      var generator = createGenerator(undefined, {
+      var generator = createGenerator({
+        generateURI: generateURI
+      }, {
         app: {
           html: indexPath
         }
@@ -86,6 +94,10 @@ describe('manifest-generator', function() {
         assert.equal(inputFiles.indexOf('asset-manifest.json'), -1, 'the input tree does not contain an asset manifest');
 
         var manifest = fs.readJsonSync(path.join(output, 'asset-manifest.json'));
+        var expectedManifest = fs.readJsonSync(path.join(inputTree, 'expected-manifests', expectedManifestPath));
+
+        assert.deepEqual(manifest, expectedManifest, 'generated manifest equals the expected manifest');
+
         var escapedManifest = metaHandler.escaper(manifest);
         var indexFile = fs.readFileSync(path.join(output, indexPath));
 
@@ -96,11 +108,17 @@ describe('manifest-generator', function() {
     }
 
     it('generates an asset manifest, merges it into the given tree, and inserts it into index.html', function() {
-      return verifyInsertedManifest('index.html');
+      return verifyInsertedManifest('basic-manifest.json', 'index.html');
     });
 
     it('inserts the asset manifest into a custom index path', function() {
-      return verifyInsertedManifest('extra.html');
+      return verifyInsertedManifest('basic-manifest.json', 'extra.html');
     });
+
+    it('uses the generateURI method to create the URIs', function() {
+      return verifyInsertedManifest('cdn-manifest.json', 'index.html', function(filePath) {
+        return 'http://cdn.io' + filePath;
+      });
+    })
   });
 })

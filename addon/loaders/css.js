@@ -15,6 +15,10 @@ import { createLoadElement, nodeLoader } from './utilities';
  */
 export default nodeLoader(function css(uri) {
   return new RSVP.Promise((resolve, reject) => {
+    if (document.querySelector(`link[href="${uri}"]`)) {
+      return resolve();
+    }
+
     // Try using the default onload/onerror handlers...
     const link = createLoadElement('link', resolve, reject);
 

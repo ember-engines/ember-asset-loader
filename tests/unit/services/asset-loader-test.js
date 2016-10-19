@@ -269,6 +269,25 @@ test('loadAsset() - js - handles failed load', function(assert) {
   return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
 });
 
+test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function(assert) {
+  assert.expect(1);
+
+  if (!document.querySelector('script[src="/unit-test.js"]')) {
+    const script = document.createElement('script');
+    script.src = '/unit-test.js';
+    document.body.appendChild(script);
+  }
+
+  const service = this.subject();
+  const asset = { type: 'js', uri: '/unit-test.js' };
+  const numScripts = document.querySelectorAll('script').length;
+
+  return service.loadAsset(asset).then(() => {
+    const newNumScripts = document.querySelectorAll('script').length;
+    assert.equal(newNumScripts, numScripts);
+  });
+});
+
 test('loadAsset() - css - handles successful load', function(assert) {
   assert.expect(1);
 
@@ -292,6 +311,25 @@ test('loadAsset() - css - handles failed load', function(assert) {
   } else {
     return service.loadAsset(asset).then(shouldHappen(assert), shouldHappen(assert));
   }
+});
+
+test('loadAsset() - css - does not insert additional link tag if asset is in DOM already', function(assert) {
+  assert.expect(1);
+
+  if (!document.querySelector('link[href="/unit-test.css"]')) {
+    const link = document.createElement('link');
+    link.href = '/unit-test.css';
+    document.head.appendChild(link);
+  }
+
+  const service = this.subject();
+  const asset = { type: 'css', uri: '/unit-test.css' };
+  const numLinks = document.querySelectorAll('link').length;
+
+  return service.loadAsset(asset).then(() => {
+    const newNumLinks = document.querySelectorAll('link').length;
+    assert.equal(newNumLinks, numLinks);
+  });
 });
 
 test('defineLoader() - overwrites existing asset loader types', function(assert) {

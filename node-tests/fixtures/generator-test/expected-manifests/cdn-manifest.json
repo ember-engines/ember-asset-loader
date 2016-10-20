@@ -1,0 +1,75 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/blog/assets/engine.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/blog/assets/engine.js"
+        },
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/blog/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/blog/assets/vendor.js"
+        },
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/blog/shared/addon.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/blog/shared/addon.js"
+        }
+      ],
+      "dependencies": [
+        "shared"
+      ]
+    },
+    "chat": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/chat/assets/engine.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/chat/assets/engine.js"
+        },
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/chat/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/chat/assets/vendor.js"
+        }
+      ]
+    },
+    "shared": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/shared/assets/addon.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/shared/assets/addon.js"
+        },
+        {
+          "type": "css",
+          "uri": "http://cdn.io/bundles/shared/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "http://cdn.io/bundles/shared/assets/vendor.js"
+        }
+      ]
+    }
+  }
+}

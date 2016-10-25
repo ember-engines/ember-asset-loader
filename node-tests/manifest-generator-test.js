@@ -98,7 +98,7 @@ describe('manifest-generator', function() {
 
         assert.deepEqual(manifest, expectedManifest, 'generated manifest equals the expected manifest');
 
-        var escapedManifest = metaHandler.escaper(manifest);
+        var escapedManifest = metaHandler.transformer(manifest);
         var indexFile = fs.readFileSync(path.join(output, indexPath));
 
         assert.notEqual(indexFile.indexOf(escapedManifest), -1, 'index contains the escaped manifest');

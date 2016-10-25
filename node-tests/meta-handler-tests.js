@@ -2,7 +2,7 @@ var assert = require('assert');
 var metaHandler = require('../lib/meta-handler');
 
 function testStringGenerator(sourceJSON) {
-  return '<meta name="testing/config/asset-manifest" content="'+ metaHandler.escaper(sourceJSON) +'" />';
+  return '<meta name="testing/config/asset-manifest" content="'+ metaHandler.transformer(sourceJSON) +'" />';
 }
 
 describe('meta-handler', function() {
@@ -18,7 +18,7 @@ describe('meta-handler', function() {
       var before = testStringGenerator({ foo: '>' });
       var after = testStringGenerator(replacement);
 
-      var result = metaHandler.replacer(before, replacement);
+      var result = metaHandler.replacer(before, metaHandler.transformer(replacement));
       assert.equal(result, after);
     });
 
@@ -35,7 +35,7 @@ describe('meta-handler', function() {
         before[1]
       ];
 
-      var result = metaHandler.replacer(before.join(''), replacement);
+      var result = metaHandler.replacer(before.join(''), metaHandler.transformer(replacement));
       assert.equal(result, after.join(''));
     });
 
@@ -54,7 +54,7 @@ describe('meta-handler', function() {
         before[2]
       ];
 
-      var result = metaHandler.replacer(before.join('\r\n'), replacement);
+      var result = metaHandler.replacer(before.join('\r\n'), metaHandler.transformer(replacement));
       assert.equal(result, after.join('\r\n'));
     });
   });

@@ -50,11 +50,28 @@ describe('asset-manifest-inserter', function() {
         var testIndex = fs.readFileSync(testIndexFilePath, { encoding: 'utf8' });
         var assetManifest = fs.readJsonSync(manifestFilePath);
 
-        var needle = metaHandler.escaper(assetManifest);
+        var needle = metaHandler.transformer(assetManifest);
 
         assert.notEqual(index.indexOf(needle), -1);
         assert.notEqual(testIndex.indexOf(needle), -1);
       })
+    );
+
+    it('uses a custom transformer to modify the manifest', build(function(results) {
+        var output = results.directory;
+        var indexFilePath = path.join(output, 'index.html');
+        var testIndexFilePath = path.join(output, 'tests', 'index.html');
+        var manifestFilePath = path.join(inputTrees[0], 'asset-manifest.json')
+
+        var index = fs.readFileSync(indexFilePath, { encoding: 'utf8' });
+        var testIndex = fs.readFileSync(testIndexFilePath, { encoding: 'utf8' });
+        var assetManifest = fs.readJsonSync(manifestFilePath);
+
+        var needle = 'herp-de-derp';
+
+        assert.notEqual(index.indexOf(needle), -1);
+        assert.notEqual(testIndex.indexOf(needle), -1);
+      }, { transformer: function() { return 'herp-de-derp'; } })
     );
 
   });

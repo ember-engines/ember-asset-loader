@@ -38,20 +38,20 @@ describe('generate-asset-manifest', function() {
   }
 
   it('adds an asset manifest to the supplied tree', function() {
-    return verifyAssetManifest('full');
+    return verifyAssetManifest('full', { bundlesLocation: '/bundles/' });
   });
 
   it('adds an asset manifest with custom supportedTypes', function() {
-    return verifyAssetManifest('txt', { supportedTypes: [ 'txt' ] });
+    return verifyAssetManifest('txt', { bundlesLocation: '/bundles/', supportedTypes: [ 'txt' ] });
   });
 
   it('uses a custom bundlesLocation and properly prepends it to generated URIs', function() {
-    return verifyAssetManifest('engines', { bundlesLocation: 'engines-dist' });
+    return verifyAssetManifest('engines', { bundlesLocation: '/engines-dist/' });
   });
 
   it('merges an existing manifest into the new one', function() {
     var inputTree = path.join(fixturePath, 'existing-test');
-    var assetManifestTree = generateAssetManifest(inputTree);
+    var assetManifestTree = generateAssetManifest(inputTree, { bundlesLocation: '/bundles/' });
     var builder = new broccoli.Builder(assetManifestTree);
 
     return builder.build().then(function _verifyAssetManifest(results) {

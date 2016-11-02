@@ -35,7 +35,7 @@ describe('asset-manifest-generator', function() {
     }
 
     it('generates an asset manifest from an input tree', function() {
-      return verifyAssetManifest('full', { prepend: '/bundles' });
+      return verifyAssetManifest('full', { prepend: '/bundles/' });
     });
 
     it('handles custom supportedTypes', function() {
@@ -48,7 +48,7 @@ describe('asset-manifest-generator', function() {
 
     it('merges with an existing manifest', function() {
       var existingManifest = path.join(manifestsPath, 'existing');
-      return verifyAssetManifest('full-plus-existing', { prepend: '/bundles' }, existingManifest);
+      return verifyAssetManifest('full-plus-existing', { prepend: '/bundles/' }, existingManifest);
     });
 
     it('throws an error when a bundle collision occurs', function() {

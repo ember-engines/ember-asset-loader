@@ -8,12 +8,14 @@ var ManifestGenerator = require('../lib/manifest-generator');
 var metaHandler = require('../lib/meta-handler');
 
 describe('manifest-generator', function() {
-  function createGenerator(options, outputPaths) {
+  function createGenerator(options, outputPaths, rootURL) {
     outputPaths = outputPaths || {
       app: {
         html: 'index.html'
       }
     };
+
+    rootURL = rootURL || '/';
 
     var Addon = ManifestGenerator.extend({
       name: 'test',
@@ -22,6 +24,11 @@ describe('manifest-generator', function() {
         options: {
           assetLoader: options,
           outputPaths: outputPaths
+        },
+        project: {
+          config: function() {
+            return { rootURL: rootURL }
+          }
         }
       }
     });
@@ -71,7 +78,7 @@ describe('manifest-generator', function() {
       assert.strictEqual(processedTree, inputTree);
     });
 
-    function verifyInsertedManifest(expectedManifestPath, indexPath, generateURI) {
+    function verifyInsertedManifest(expectedManifestPath, indexPath, rootURL, generateURI) {
       var fixturePath = path.join(__dirname, 'fixtures');
       var inputTree = path.join(fixturePath, 'generator-test');
 
@@ -81,7 +88,7 @@ describe('manifest-generator', function() {
         app: {
           html: indexPath
         }
-      });
+      }, rootURL);
       var processedTree = generator.postprocessTree('all', inputTree);
 
       var builder = new broccoli.Builder(processedTree);
@@ -115,10 +122,14 @@ describe('manifest-generator', function() {
       return verifyInsertedManifest('basic-manifest.json', 'extra.html');
     });
 
+    it('properly inserts the rootURL', function() {
+      return verifyInsertedManifest('rooturl-manifest.json', 'index.html', '/rootURL/');
+    });
+
     it('uses the generateURI method to create the URIs', function() {
-      return verifyInsertedManifest('cdn-manifest.json', 'index.html', function(filePath) {
+      return verifyInsertedManifest('cdn-manifest.json', 'index.html', '/anywhere/', function(filePath) {
         return 'http://cdn.io' + filePath;
       });
-    })
+    });
   });
 })

@@ -1,0 +1,125 @@
+import Ember from 'ember';
+
+let cachedRequireEntries;
+let cachedScriptTags;
+let cachedLinkTags;
+
+/**
+ * Determines whether an array contains the provided item.
+ *
+ * @param {Array} array
+ * @param {Any} item
+ * @return {Boolean}
+ */
+function has(array, item) {
+  return array.indexOf(item) !== -1;
+}
+
+/**
+ * Removes a DOM Node from the document.
+ *
+ * @param {Node} node
+ * @return {Void}
+ */
+function removeNode(node) {
+  node.parentNode.removeChild(node);
+}
+
+/**
+ * Converts an iterable object into an actual Array.
+ *
+ * @param {Iterable} iterable
+ * @return {Array}
+ */
+function toArray(iterable) {
+  return Array.prototype.slice.call(iterable);
+}
+
+/**
+ * Returns all of the HTML Elements matching a given selector as an array.
+ *
+ * @param {String} selector
+ * @return {Array<HTMLElement>}
+ */
+function getAll(selector) {
+  const htmlCollection = document.querySelectorAll(selector);
+  return toArray(htmlCollection);
+}
+
+/**
+ * Deletes an entry from require's list of modules.
+ *
+ * @param {String} entry
+ * @return {Void}
+ */
+function resetRequireEntry(entry) {
+  delete requirejs.entries[entry];
+}
+
+/**
+ * Compares two arrays, if they're different, invokes a callback for each
+ * entry that does not appear in the initial array.
+ *
+ * @param {Array} initial
+ * @param {Array} current
+ * @param {Function} diffHandler
+ * @return {Void}
+ */
+function compareAndIterate(initial, current, diffHandler) {
+  if (initial.length < current.length) {
+    for (let i = 0; i < current.length; i++) {
+      let entry = current[i];
+      if (!has(initial, entry)) {
+        diffHandler(entry);
+      }
+    }
+  }
+}
+
+/**
+ * Gets the current loaded asset state including scripts, links, and require
+ * modules.
+ *
+ * @return {Object}
+ */
+export function getLoadedAssetState() {
+  return {
+    requireEntries: Object.keys(requirejs.entries),
+    scripts: getAll('script'),
+    links: getAll('link')
+  };
+}
+
+/**
+ * Caches the current loaded asset state with regards to links, scripts, and JS
+ * modules currently present.
+ *
+ * @return {Void}
+ */
+export function cacheLoadedAssetState() {
+  ({
+    requireEntries: cachedRequireEntries,
+    scripts: cachedScriptTags,
+    links: cachedLinkTags
+  } = getLoadedAssetState());
+}
+
+/**
+ * Restores the loaded asset state to the previous cached value with regards to
+ * links, scripts, and JS modules.
+ *
+ * @return {Void}
+ */
+export function resetLoadedAssetState() {
+  Ember.Logger.info('Resetting loaded asset state. This will attempt to restore the state of loaded assets to the last cached value. If an asset modified some global state, we cannot guarantee it will be reset. For more information see: https://github.com/trentmwillis/ember-asset-loader#resetting-test-state');
+
+  const {
+    requireEntries: currentRequireEntries,
+    scripts: currentScriptTags,
+    links: currentLinkTags
+  } = getLoadedAssetState();
+
+  compareAndIterate(cachedRequireEntries, currentRequireEntries, resetRequireEntry);
+  compareAndIterate(cachedScriptTags, currentScriptTags, removeNode);
+  compareAndIterate(cachedLinkTags, currentLinkTags, removeNode);
+}

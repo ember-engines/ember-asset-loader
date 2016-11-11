@@ -102,6 +102,31 @@ import manifest from 'app/config/asset-manifest';
 preloadAssets(manifest);
 ```
 
+### Resetting Test State
+
+When testing applications with lazy assets, it is important to reset the state of those assets in between tests. To do
+this, Ember Asset Loader provides two helpers: `cacheLoadedAssetState()` and `resetLoadedAssetState()`.
+
+```js
+// tests/test-helper.js
+import preloadAssets from 'ember-asset-loader/test-support/preload-assets';
+import { cacheLoadedAssetState, resetLoadedAssetState } from 'ember-asset-loader/test-support/loaded-asset-state';
+import manifest from 'app/config/asset-manifest';
+
+cacheLoadedAssetState();
+preloadAssets(manifest).then(() => {
+  resetLoadedAssetState(); // Undoes the previous load!
+});
+```
+
+It is important to note that `resetLoadedAssetState` can only remove additional scripts, stylesheets, and modules loaded
+since `cacheLoadedAssetState` was called. If any of the loaded assets modified global state, we'll be unable to restore
+that state. Therefore, it is important to keep your lazy assets encapsulated and make sure they don't modified any state
+already in the browser.
+
+_Note: If you use QUnit, it may be worthwhile to turn on the [`noglobals` config option](https://api.qunitjs.com/QUnit.config/),
+to help catch mutated global state._
+
 ## Installation
 
 * `git clone https://github.com/trentmwillis/ember-asset-loader`

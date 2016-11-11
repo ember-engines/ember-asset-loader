@@ -27,7 +27,6 @@ function build(assertion, options) {
 
 describe('asset-manifest-inserter', function() {
   describe('build', function() {
-
     it('only modifies index.html', build(function(results) {
         var output = results.directory;
         assert.deepEqual(walk(output), [ 'index.html', 'tests/', 'tests/index.html' ]);
@@ -67,11 +66,16 @@ describe('asset-manifest-inserter', function() {
         var testIndex = fs.readFileSync(testIndexFilePath, { encoding: 'utf8' });
         var assetManifest = fs.readJsonSync(manifestFilePath);
 
-        var needle = 'herp-de-derp';
+        var appNeedle = 'herp-de-derp';
+        assert.notEqual(index.indexOf(appNeedle), -1);
 
-        assert.notEqual(index.indexOf(needle), -1);
-        assert.notEqual(testIndex.indexOf(needle), -1);
-      }, { transformer: function() { return 'herp-de-derp'; } })
+        var testNeedle = 'derp-de-herp';
+        assert.notEqual(testIndex.indexOf(testNeedle), -1);
+      }, {
+        transformer: function(manifest, type) {
+          return type === 'test' ? 'derp-de-herp' : 'herp-de-derp';
+        }
+      })
     );
 
   });

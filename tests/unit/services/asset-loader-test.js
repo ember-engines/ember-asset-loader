@@ -288,6 +288,18 @@ test('loadAsset() - js - does not insert additional script tag if asset is in DO
   });
 });
 
+test('loadAsset() - js - sets async false to try to guarantee execution order', function(assert) {
+  assert.expect(1);
+
+  const service = this.subject();
+  const asset = { type: 'js', uri: '/unit-test.js' };
+
+  return service.loadAsset(asset).then(() => {
+    const script = document.querySelector('script[src="/unit-test.js"]');
+    assert.equal(script.async, false);
+  });
+});
+
 test('loadAsset() - css - handles successful load', function(assert) {
   assert.expect(1);
 

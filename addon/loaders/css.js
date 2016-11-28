@@ -1,5 +1,5 @@
 import RSVP from 'rsvp';
-import { createLoadElement, nodeLoader } from './utilities';
+import { createLoadElement, nodeLoader, singlePendingPromise } from './utilities';
 
 /**
  * Default loader function for CSS assets. Loads them by inserting a link tag
@@ -14,39 +14,41 @@ import { createLoadElement, nodeLoader } from './utilities';
  * @return {Promise}
  */
 export default nodeLoader(function css(uri) {
-  return new RSVP.Promise((resolve, reject) => {
-    if (document.querySelector(`link[href="${uri}"]`)) {
-      return resolve();
-    }
+  return singlePendingPromise(uri, ()=>
+    new RSVP.Promise((resolve, reject) => {
+      if (document.querySelector(`link[href="${uri}"]`)) {
+        return resolve();
+      }
 
-    // Try using the default onload/onerror handlers...
-    const link = createLoadElement('link', resolve, reject);
+      // Try using the default onload/onerror handlers...
+      const link = createLoadElement('link', resolve, reject);
 
-    link.rel = 'stylesheet';
-    link.href = uri;
+      link.rel = 'stylesheet';
+      link.href = uri;
 
-    document.head.appendChild(link);
+      document.head.appendChild(link);
 
-    // In case the browser doesn't fire onload/onerror events, we poll the
-    // the list of stylesheets to see when it loads...
-    function checkSheetLoad() {
-      const resolvedHref = link.href;
-      const stylesheets = document.styleSheets;
-      let i = stylesheets.length;
+      // In case the browser doesn't fire onload/onerror events, we poll the
+      // the list of stylesheets to see when it loads...
+      function checkSheetLoad() {
+        const resolvedHref = link.href;
+        const stylesheets = document.styleSheets;
+        let i = stylesheets.length;
 
-      while (i--) {
-        const sheet = stylesheets[i];
-        if (sheet.href === resolvedHref) {
-          // Unfortunately we have no way of knowing if the load was
-          // successful or not, so we always resolve.
-          setTimeout(resolve);
-          return;
+        while (i--) {
+          const sheet = stylesheets[i];
+          if (sheet.href === resolvedHref) {
+            // Unfortunately we have no way of knowing if the load was
+            // successful or not, so we always resolve.
+            setTimeout(resolve);
+            return;
+          }
         }
+
+        setTimeout(checkSheetLoad);
       }
 
       setTimeout(checkSheetLoad);
-    }
-
-    setTimeout(checkSheetLoad);
-  });
+    })
+  );
 });

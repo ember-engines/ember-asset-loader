@@ -18,6 +18,7 @@ export default nodeLoader(function js(uri) {
     const script = createLoadElement('script', resolve, reject);
 
     script.src = uri;
+    script.async = false;
 
     document.head.appendChild(script);
   });

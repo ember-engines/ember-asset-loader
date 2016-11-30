@@ -1,6 +1,6 @@
 {
   "name": "ember-asset-loader",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Asset loading support for Ember applications",
   "directories": {
     "doc": "doc",

@@ -1,6 +1,6 @@
 # Ember Asset Loader
 
-[![Build Status](https://travis-ci.org/trentmwillis/ember-asset-loader.svg?branch=master)](https://travis-ci.org/trentmwillis/ember-asset-loader)
+[![Build Status](https://travis-ci.org/ember-engines/ember-asset-loader.svg?branch=master)](https://travis-ci.org/ember-engines/ember-asset-loader)
 [![Code Climate](https://codeclimate.com/github/trentmwillis/ember-asset-loader/badges/gpa.svg)](https://codeclimate.com/github/trentmwillis/ember-asset-loader)
 
 Provides experimental support for the [Asset Manifest RFC](https://github.com/emberjs/rfcs/pull/153) and [Asset Loader Service RFC](https://github.com/emberjs/rfcs/pull/158).

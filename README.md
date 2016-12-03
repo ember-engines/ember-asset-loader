@@ -86,7 +86,7 @@ server.
 Additionally, at build time we will generate an `assets/node-asset-manifest.js` file that should be included in your SSR
 environment to ensure that your application can correctly access asset information.
 
-See the ["How to handle running in Node"](https://github.com/trentmwillis/ember-asset-loader/issues/21) issue for more
+See the ["How to handle running in Node"](https://github.com/ember-engines/ember-asset-loader/issues/21) issue for more
 information.
 
 ## Pre-loading Assets During Testing
@@ -129,7 +129,7 @@ to help catch mutated global state._
 
 ## Installation
 
-* `git clone https://github.com/trentmwillis/ember-asset-loader`
+* `git clone https://github.com/ember-engines/ember-asset-loader`
 * `cd ember-asset-loader`
 * `npm install`
 * `bower install`

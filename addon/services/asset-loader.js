@@ -69,7 +69,7 @@ export default Ember.Service.extend({
    * @public
    * @method loadBundle
    * @param {String} name
-   * @param {Boolean} retryLoad
+   * @param {Boolean} retryLoad Warning: only used internally to re-initiate loads, NOT public API
    * @return {Promise} bundlePromise
    */
   loadBundle(name, retryLoad) {

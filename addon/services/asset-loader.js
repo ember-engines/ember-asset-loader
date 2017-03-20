@@ -40,6 +40,8 @@ export default Ember.Service.extend({
    * @override
    */
   init() {
+    this._super(...arguments);
+    
     this.__manifests = [];
     this._setupCache();
     this._initAssetLoaders();

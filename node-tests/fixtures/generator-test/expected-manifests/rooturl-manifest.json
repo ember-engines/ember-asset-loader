@@ -1,0 +1,75 @@
+{
+  "bundles": {
+    "blog": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/blog/assets/engine.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/blog/assets/engine.js"
+        },
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/blog/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/blog/assets/vendor.js"
+        },
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/blog/shared/addon.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/blog/shared/addon.js"
+        }
+      ],
+      "dependencies": [
+        "shared"
+      ]
+    },
+    "chat": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/chat/assets/engine.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/chat/assets/engine.js"
+        },
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/chat/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/chat/assets/vendor.js"
+        }
+      ]
+    },
+    "shared": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/shared/assets/addon.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/shared/assets/addon.js"
+        },
+        {
+          "type": "css",
+          "uri": "/rootURL/bundles/shared/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "/rootURL/bundles/shared/assets/vendor.js"
+        }
+      ]
+    }
+  }
+}

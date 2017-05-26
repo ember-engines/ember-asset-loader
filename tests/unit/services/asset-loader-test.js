@@ -5,9 +5,6 @@ function noop() {}
 function shouldNotHappen(assert) {
   return () => assert.ok(false, 'callback should not happen');
 }
-function shouldHappen(assert) {
-  return () => assert.ok(true, 'callback should happen');
-}
 
 moduleFor('service:asset-loader', 'Unit | Service | asset-loader');
 
@@ -252,12 +249,12 @@ test('loadAsset() - retrying a load twice returns the same promise', function(as
 });
 
 test('loadAsset() - js - handles successful load', function(assert) {
-  assert.expect(1);
+  assert.expect(0);
 
   const service = this.subject();
   const asset = { type: 'js', uri: '/unit-test.js' };
 
-  return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+  return service.loadAsset(asset);
 });
 
 test('loadAsset() - js - handles failed load', function(assert) {
@@ -266,7 +263,7 @@ test('loadAsset() - js - handles failed load', function(assert) {
   const service = this.subject();
   const asset = { type: 'js', uri: '/unit-test.jsss' };
 
-  return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+  return service.loadAsset(asset);
 });
 
 test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function(assert) {
@@ -301,16 +298,16 @@ test('loadAsset() - js - sets async false to try to guarantee execution order', 
 });
 
 test('loadAsset() - css - handles successful load', function(assert) {
-  assert.expect(1);
+  assert.expect(0);
 
   const service = this.subject();
   const asset = { type: 'css', uri: '/unit-test.css' };
 
-  return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+  return service.loadAsset(asset);
 });
 
 test('loadAsset() - css - handles failed load', function(assert) {
-  assert.expect(1);
+  assert.expect(0);
 
   const service = this.subject();
   const asset = { type: 'css', uri: '/unit-test.csss' };
@@ -319,9 +316,9 @@ test('loadAsset() - css - handles failed load', function(assert) {
   // non-Chrome browsers to either resolve or reject (they should do something).
   var isChrome = !!window.chrome && window.navigator.vendor === 'Google Inc.';
   if (isChrome) {
-    return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+    return service.loadAsset(asset);
   } else {
-    return service.loadAsset(asset).then(shouldHappen(assert), shouldHappen(assert));
+    return service.loadAsset(asset);
   }
 });
 

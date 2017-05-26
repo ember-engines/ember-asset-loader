@@ -1,5 +1,6 @@
 import RSVP from 'rsvp';
 import { createLoadElement, nodeLoader } from './utilities';
+import { scheduleWork } from './scheduler';
 
 /**
  * Default loader function for CSS assets. Loads them by inserting a link tag
@@ -19,34 +20,46 @@ export default nodeLoader(function css(uri) {
       return resolve();
     }
 
-    // Try using the default onload/onerror handlers...
-    const link = createLoadElement('link', resolve, reject);
+    scheduleWork(() => {
+      let link;
+      try {
+        // Try using the default onload/onerror handlers...
+        link = createLoadElement('link', resolve, reject);
 
-    link.rel = 'stylesheet';
-    link.href = uri;
+        link.rel = 'stylesheet';
+        link.href = uri;
 
-    document.head.appendChild(link);
+        document.head.appendChild(link);
 
-    // In case the browser doesn't fire onload/onerror events, we poll the
-    // the list of stylesheets to see when it loads...
-    function checkSheetLoad() {
-      const resolvedHref = link.href;
-      const stylesheets = document.styleSheets;
-      let i = stylesheets.length;
+        // In case the browser doesn't fire onload/onerror events, we poll the
+        // the list of stylesheets to see when it loads...
 
-      while (i--) {
-        const sheet = stylesheets[i];
-        if (sheet.href === resolvedHref) {
-          // Unfortunately we have no way of knowing if the load was
-          // successful or not, so we always resolve.
-          setTimeout(resolve);
-          return;
-        }
+        setTimeout(checkSheetLoad);
+      } catch(reason) {
+        reject(reason);
       }
 
-      setTimeout(checkSheetLoad);
-    }
+      function checkSheetLoad() {
+        try {
+          const resolvedHref = link.href;
+          const stylesheets = document.styleSheets;
+          let i = stylesheets.length;
 
-    setTimeout(checkSheetLoad);
+          while (i--) {
+            const sheet = stylesheets[i];
+            if (sheet.href === resolvedHref) {
+              // Unfortunately we have no way of knowing if the load was
+              // successful or not, so we always resolve.
+              setTimeout(resolve);
+              return;
+            }
+          }
+
+          setTimeout(checkSheetLoad);
+        } catch(reason) {
+          reject(reason);
+        }
+      }
+    });
   });
 });

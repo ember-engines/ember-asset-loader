@@ -1,3 +1,4 @@
+import require from 'require';
 import environment from './environment';
 
 const modulePrefix = environment.modulePrefix;

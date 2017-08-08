@@ -1,3 +1,13 @@
+function ExtendBuiltin(klass) {
+  function ExtendableBuiltin() {
+    klass.apply(this, arguments);
+  }
+
+  ExtendableBuiltin.prototype = Object.create(klass.prototype);
+  ExtendableBuiltin.prototype.constructor = ExtendableBuiltin;
+  return ExtendableBuiltin;
+}
+
 /**
  * A simple Error type to represent an error that occured while loading a
  * resource.
@@ -5,7 +15,7 @@
  * @class LoadError
  * @extends Error
  */
-export default class LoadError extends Error {
+export default class LoadError extends ExtendBuiltin(Error) {
   /**
    * Constructs a new LoadError with a supplied error message and an instance
    * of the AssetLoader service to use when retrying a load.

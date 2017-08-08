@@ -46,7 +46,7 @@
     "broccoli-caching-writer": "^3.0.3",
     "broccoli-funnel": "^1.0.8",
     "broccoli-merge-trees": "^1.1.2",
-    "ember-cli-babel": "^5.1.6",
+    "ember-cli-babel": "^6.7.2",
     "exists-sync": "0.0.3",
     "fs-extra": "^0.30.0",
     "object-assign": "^4.1.0",

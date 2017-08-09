@@ -1,8 +1,13 @@
+'use strict';
+
 var path = require('path');
 var assert = require('assert');
 var walk = require('walk-sync');
 var fs = require('fs-extra');
-var broccoli = require('broccoli');
+
+const co = require('co');
+const helpers = require('broccoli-test-helper');
+const createBuilder = helpers.createBuilder;
 
 var AssetManifestInserter = require('../lib/asset-manifest-inserter');
 var metaHandler = require('../lib/meta-handler');
@@ -11,18 +16,18 @@ var fixturePath = path.join(__dirname, 'fixtures');
 var inputTrees = [ path.join(fixturePath, 'insertion-test') ];
 
 function build(assertion, options) {
-  return function() {
+  return co.wrap(function* () {
     options = options || {};
 
     var inserter = new AssetManifestInserter(inputTrees, options);
-    var builder = new broccoli.Builder(inserter);
+    var output = createBuilder(inserter);
 
-    return builder.build()
-      .then(assertion)
-      .then(function() {
-        builder.cleanup();
-      });
-  }
+    yield output.build();
+
+    assertion({ directory: output.path() });
+
+    yield output.dispose();
+  });
 }
 
 describe('asset-manifest-inserter', function() {

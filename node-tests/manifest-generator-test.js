@@ -1,11 +1,17 @@
+'use strict';
+
 var path = require('path');
 var assert = require('assert');
 var walk = require('walk-sync');
-var broccoli = require('broccoli');
 var fs = require('fs-extra');
 
 var ManifestGenerator = require('../lib/manifest-generator');
 var metaHandler = require('../lib/meta-handler');
+
+const co = require('co');
+const helpers = require('broccoli-test-helper');
+const createBuilder = helpers.createBuilder;
+const createTempDir = helpers.createTempDir;
 
 describe('manifest-generator', function() {
   function createGenerator(options, outputPaths) {
@@ -28,6 +34,21 @@ describe('manifest-generator', function() {
 
     return new Addon();
   }
+
+  let input;
+  let output;
+
+  beforeEach(co.wrap(function* () {
+    input = yield createTempDir();
+  }));
+
+  afterEach(co.wrap(function* () {
+    yield input.dispose();
+
+    if (output) {
+      yield output.dispose();
+    }
+  }));
 
   describe('contentFor', function() {
     it('returns a meta tag with a placeholder for head-footer', function() {
@@ -71,7 +92,7 @@ describe('manifest-generator', function() {
       assert.strictEqual(processedTree, inputTree);
     });
 
-    function verifyInsertedManifest(expectedManifestPath, indexPath, generateURI) {
+    let verifyInsertedManifest = co.wrap(function* verifyInsertedManifest(expectedManifestPath, indexPath, generateURI) {
       var fixturePath = path.join(__dirname, 'fixtures');
       var inputTree = path.join(fixturePath, 'generator-test');
 
@@ -83,29 +104,26 @@ describe('manifest-generator', function() {
         }
       });
       var processedTree = generator.postprocessTree('all', inputTree);
+      output = createBuilder(processedTree);
 
-      var builder = new broccoli.Builder(processedTree);
-      return builder.build().then(function(results) {
-        var output = results.directory;
-        var outputFiles = walk(output);
-        var inputFiles = walk(inputTree);
+      yield output.build();
 
-        assert.notEqual(outputFiles.indexOf('asset-manifest.json'), -1, 'the output tree contains an asset manifest');
-        assert.equal(inputFiles.indexOf('asset-manifest.json'), -1, 'the input tree does not contain an asset manifest');
+      var outputFiles = walk(output.path());
+      var inputFiles = walk(inputTree);
 
-        var manifest = fs.readJsonSync(path.join(output, 'asset-manifest.json'));
-        var expectedManifest = fs.readJsonSync(path.join(inputTree, 'expected-manifests', expectedManifestPath));
+      assert.notEqual(outputFiles.indexOf('asset-manifest.json'), -1, 'the output tree contains an asset manifest');
+      assert.equal(inputFiles.indexOf('asset-manifest.json'), -1, 'the input tree does not contain an asset manifest');
 
-        assert.deepEqual(manifest, expectedManifest, 'generated manifest equals the expected manifest');
+      var manifest = fs.readJsonSync(output.path('asset-manifest.json'));
+      var expectedManifest = fs.readJsonSync(path.join(inputTree, 'expected-manifests', expectedManifestPath));
 
-        var escapedManifest = metaHandler.transformer(manifest);
-        var indexFile = fs.readFileSync(path.join(output, indexPath));
+      assert.deepEqual(manifest, expectedManifest, 'generated manifest equals the expected manifest');
 
-        assert.notEqual(indexFile.indexOf(escapedManifest), -1, 'index contains the escaped manifest');
+      var escapedManifest = metaHandler.transformer(manifest);
+      var indexFile = fs.readFileSync(output.path(indexPath));
 
-        builder.cleanup();
-      });
-    }
+      assert.notEqual(indexFile.indexOf(escapedManifest), -1, 'index contains the escaped manifest');
+    });
 
     it('generates an asset manifest, merges it into the given tree, and inserts it into index.html', function() {
       return verifyInsertedManifest('basic-manifest.json', 'index.html');

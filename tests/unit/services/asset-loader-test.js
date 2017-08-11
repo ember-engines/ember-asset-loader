@@ -263,7 +263,7 @@ test('loadAsset() - js - handles failed load', function(assert) {
   const service = this.subject();
   const asset = { type: 'js', uri: '/unit-test.jsss' };
 
-  return service.loadAsset(asset);
+  return service.loadAsset(asset).catch(() => assert.ok(true, 'loadAsset should reject'));
 });
 
 test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function(assert) {
@@ -307,7 +307,7 @@ test('loadAsset() - css - handles successful load', function(assert) {
 });
 
 test('loadAsset() - css - handles failed load', function(assert) {
-  assert.expect(0);
+  assert.expect(1);
 
   const service = this.subject();
   const asset = { type: 'css', uri: '/unit-test.csss' };
@@ -316,9 +316,11 @@ test('loadAsset() - css - handles failed load', function(assert) {
   // non-Chrome browsers to either resolve or reject (they should do something).
   var isChrome = !!window.chrome && window.navigator.vendor === 'Google Inc.';
   if (isChrome) {
-    return service.loadAsset(asset);
+    return service.loadAsset(asset).catch(() => assert.ok(true, 'loadAsset should reject'));
   } else {
-    return service.loadAsset(asset);
+    return service.loadAsset(asset)
+      .then(() => assert.ok(true, 'loadAsset may resolve'))
+      .catch(() => assert.ok(true, 'loadAsset may reject'));
   }
 });
 

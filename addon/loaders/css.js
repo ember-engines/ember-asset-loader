@@ -20,7 +20,10 @@ export default nodeLoader(function css(uri) {
     }
 
     // Try using the default onload/onerror handlers...
-    const link = createLoadElement('link', resolve, reject);
+    const link = createLoadElement('link', resolve, function() {
+      this.remove();
+      reject(...arguments);
+    });
 
     link.rel = 'stylesheet';
     link.href = uri;

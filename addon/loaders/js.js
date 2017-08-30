@@ -15,7 +15,10 @@ export default nodeLoader(function js(uri) {
       return resolve();
     }
 
-    const script = createLoadElement('script', resolve, reject);
+    const script = createLoadElement('script', resolve, function() {
+      this.remove();
+      reject(...arguments);
+    });
 
     script.src = uri;
     script.async = false;

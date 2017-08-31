@@ -127,6 +127,42 @@ test('loadBundle() - a rejection allows retrying the load', function(assert) {
   );
 });
 
+test('loadBundle() - subsequent call after rejection returns a new promise', function(assert) {
+  assert.expect(2);
+
+  const service = this.subject();
+  let firstRetry;
+
+  service.pushManifest({
+    bundles: {
+      blog: {
+        assets: [
+          { type: 'fail', uri: 'someuri' }
+        ]
+      }
+    }
+  });
+
+  service.defineLoader('fail', () => RSVP.reject('rejected'));
+
+
+  return service.loadBundle('blog').then(
+    shouldNotHappen(assert),
+    (error) => firstRetry = error.retryLoad()
+  ).then(
+    shouldNotHappen(assert),
+    () => {
+      service.defineLoader('fail', () => RSVP.resolve());
+
+      const serviceRetry = service.loadBundle('blog');
+
+      assert.notStrictEqual(firstRetry, serviceRetry, 'calling loadAsset again returns other result');
+
+      return serviceRetry;
+    }
+  ).then(shouldHappen(assert), shouldNotHappen(assert));
+});
+
 test('loadBundle() - retrying a load twice returns the same promise', function(assert) {
   assert.expect(2);
 
@@ -226,6 +262,32 @@ test('loadAsset() - a rejection allows retrying the load', function(assert) {
       assert.ok(true, 'retry error occured');
     }
   );
+});
+
+test('loadAsset() - subsequent call after rejection returns a new promise', function(assert) {
+  assert.expect(2);
+
+  const service = this.subject();
+  const asset = { type: 'test', uri: 'someuri' };
+  let firstRetry;
+
+  service.defineLoader('test', () => RSVP.reject('some error'));
+
+  return service.loadAsset(asset).then(
+    shouldNotHappen(assert),
+    (error) => firstRetry = error.retryLoad()
+  ).then(
+    shouldNotHappen(assert),
+    () => {
+      service.defineLoader('test', () => RSVP.resolve());
+
+      const serviceRetry = service.loadAsset(asset);
+
+      assert.notStrictEqual(firstRetry, serviceRetry, 'calling loadAsset again returns other result');
+
+      return serviceRetry;
+    }
+  ).then(shouldHappen(assert), shouldNotHappen(assert));
 });
 
 test('loadAsset() - retrying a load twice returns the same promise', function(assert) {

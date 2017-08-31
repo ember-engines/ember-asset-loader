@@ -67,3 +67,25 @@ test('visiting a route which loads a bundle', function(assert) {
       });
   });
 });
+
+test('visiting a route which fails to load an asset', function(assert) {
+  assert.expect(2);
+
+  const getScript = () => document.querySelector('script[src="foo.js"]');
+
+  visit('asset-error');
+
+  andThen(function() {
+    assert.equal(currentRouteName(), 'asset-error', 'transitioned ');
+
+    return waitFor(() => {
+      return !getScript();
+    })
+      .catch((reason) => {
+        assert.notOk(true, reason.message);
+      })
+      .then(() => {
+        assert.ok(true, 'failed script was removed from the DOM');
+      });
+  });
+});

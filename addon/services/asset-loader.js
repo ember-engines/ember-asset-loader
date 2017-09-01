@@ -97,7 +97,7 @@ export default Ember.Service.extend({
 
       if (errors.length) {
         // Evict rejected promise.
-        this._getFromCache('bundle', name, RETRY_LOAD_SECRET);
+        this._getFromCache('bundle', name, true);
         throw new BundleLoadError(this, name, errors);
       }
 
@@ -134,7 +134,7 @@ export default Ember.Service.extend({
       () => ({ uri, type }),
       (error) => {
         // Evict rejected promise.
-        this._getFromCache('asset', cacheKey, RETRY_LOAD_SECRET);
+        this._getFromCache('asset', cacheKey, true);
         throw new AssetLoadError(this, { uri, type }, error);
       }
     );

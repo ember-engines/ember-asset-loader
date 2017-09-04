@@ -72,6 +72,7 @@ test('visiting a route which fails to load an asset', function(assert) {
   assert.expect(2);
 
   const getScript = () => document.querySelector('script[src="foo.js"]');
+  const getLink = () => document.querySelector('link[href="foo.css"]');
 
   visit('asset-error');
 
@@ -79,13 +80,13 @@ test('visiting a route which fails to load an asset', function(assert) {
     assert.equal(currentRouteName(), 'asset-error', 'transitioned ');
 
     return waitFor(() => {
-      return !getScript();
+      return !getScript() && !getLink();
     })
       .catch((reason) => {
         assert.notOk(true, reason.message);
       })
       .then(() => {
-        assert.ok(true, 'failed script was removed from the DOM');
+        assert.ok(true, 'failed assets were removed from DOM');
       });
   });
 });

@@ -5,7 +5,6 @@ export default Ember.Route.extend({
 
   beforeModel() {
     this.get('assetLoader').loadAsset({ uri: 'foo.js', type: 'js' }).catch(() => {});
-    this.get('assetLoader').loadAsset({ uri: 'foo.css', type: 'css' }).catch(() => {});
 
     return this._super(...arguments);
   }

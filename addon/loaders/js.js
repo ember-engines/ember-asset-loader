@@ -16,7 +16,9 @@ export default nodeLoader(function js(uri) {
     }
 
     const script = createLoadElement('script', resolve, function() {
-      document.head.removeChild(this);
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
       reject(...arguments);
     });
 

@@ -15,11 +15,11 @@ export default nodeLoader(function js(uri) {
       return resolve();
     }
 
-    const script = createLoadElement('script', resolve, function() {
+    const script = createLoadElement('script', resolve, function(error) {
       if (this.parentNode) {
         this.parentNode.removeChild(this);
       }
-      reject(...arguments);
+      reject(error);
     });
 
     script.src = uri;

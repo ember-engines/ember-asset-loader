@@ -145,7 +145,6 @@ test('loadBundle() - subsequent call after rejection returns a new promise', fun
 
   service.defineLoader('fail', () => RSVP.reject('rejected'));
 
-
   return service.loadBundle('blog').then(
     shouldNotHappen(assert),
     (error) => firstRetry = error.retryLoad()

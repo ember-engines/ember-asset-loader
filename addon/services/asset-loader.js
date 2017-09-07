@@ -41,7 +41,7 @@ export default Ember.Service.extend({
    */
   init() {
     this._super(...arguments);
-    
+
     this.__manifests = [];
     this._setupCache();
     this._initAssetLoaders();
@@ -96,6 +96,8 @@ export default Ember.Service.extend({
       const errors = rejects.map((reject) => reject.reason);
 
       if (errors.length) {
+        // Evict rejected promise.
+        this._getFromCache('bundle', name, true);
         throw new BundleLoadError(this, name, errors);
       }
 
@@ -131,6 +133,8 @@ export default Ember.Service.extend({
     const assetWithFail = assetPromise.then(
       () => ({ uri, type }),
       (error) => {
+        // Evict rejected promise.
+        this._getFromCache('asset', cacheKey, true);
         throw new AssetLoadError(this, { uri, type }, error);
       }
     );

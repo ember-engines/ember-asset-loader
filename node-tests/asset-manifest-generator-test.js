@@ -62,6 +62,13 @@ describe('asset-manifest-generator', function() {
       return verifyAssetManifest('resources', { prepend: '/resources/' });
     });
 
+    it('can ignore specific files', function() {
+      return verifyAssetManifest('full-minus-ignored-files', {
+        prepend: '/bundles',
+        filesToIgnore: [ 'blog/assets/engine.css', 'chat/assets/engine.js' ]
+      });
+    });
+
     it('merges with an existing manifest', function() {
       var existingManifest = path.join(manifestsPath, 'existing');
       return verifyAssetManifest('full-plus-existing', { prepend: '/bundles' }, existingManifest);

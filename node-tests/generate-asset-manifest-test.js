@@ -64,6 +64,10 @@ describe('generate-asset-manifest', function() {
     return verifyAssetManifest('engines', { bundlesLocation: 'engines-dist' });
   });
 
+  it('can ignore specific files', function() {
+    return verifyAssetManifest('full-minus-ignored-files', { filesToIgnore: [ 'blog/assets/engine.css', 'chat/assets/engine.js' ] });
+  });
+
   it('merges an existing manifest into the new one', co.wrap(function* () {
     var inputTree = path.join(fixturePath, 'existing-test');
     var assetManifestTree = generateAssetManifest(inputTree);

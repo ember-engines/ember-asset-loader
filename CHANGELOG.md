@@ -1,3 +1,8 @@
+v0.4.1 / 2017-10-06
+===================
+
+  * Fix issue causing every rebuild to force a full live reload (even if only CSS has changed).
+
 v0.4.0 / 2017-09-17
 ===================
 

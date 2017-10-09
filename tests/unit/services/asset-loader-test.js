@@ -431,3 +431,7 @@ test('pushManifest() - throws an error when merging two manifests with the same 
   service.pushManifest(manifest);
   assert.throws(() => service.pushManifest(manifest), /The bundle "blog" already exists./);
 });
+
+test('loadAsset() - if document.scripts is available, do not call querySelector', function(assert) {
+  // Do we need to introduce a mocking library? sinon?
+});

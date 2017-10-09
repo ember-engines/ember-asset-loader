@@ -37,3 +37,10 @@ export function nodeLoader(loader) {
     return () => RSVP.resolve();
   }
 }
+
+export function uriIncluded (uri, document) {
+  if (document.scripts) {
+    return Array.from(document.scripts).filter(script => script.src && script.src.includes(uri));
+  }
+  return document.querySelector(`script[src="${uri}"]`);
+}

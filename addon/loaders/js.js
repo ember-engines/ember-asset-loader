@@ -1,5 +1,5 @@
 import RSVP from 'rsvp';
-import { createLoadElement, nodeLoader } from './utilities';
+import { createLoadElement, nodeLoader, uriIncluded } from './utilities';
 
 /**
  * Default loader function for JS assets. Loads them by inserting a script tag
@@ -11,7 +11,7 @@ import { createLoadElement, nodeLoader } from './utilities';
  */
 export default nodeLoader(function js(uri) {
   return new RSVP.Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${uri}"]`)) {
+    if (uriIncluded(uri, document)) {
       return resolve();
     }
 

@@ -10,6 +10,7 @@ const createBuilder = helpers.createBuilder;
 const createTempDir = helpers.createTempDir;
 
 var AssetManifestGenerator = require('../lib/asset-manifest-generator');
+var bundleInfoFromAssetEntry = AssetManifestGenerator._bundleInfoFromAssetEntry;
 
 describe('asset-manifest-generator', function() {
   let input;
@@ -91,5 +92,64 @@ describe('asset-manifest-generator', function() {
         assert.ok(reason.toString().indexOf('Attempting to add bundle "blog" to manifest but a bundle with that name already exists.') !== -1);
       })
     });
+  });
+});
+
+
+describe('bundleInfoFromAssetEntry', function() {
+  it('converts basic paths from walkSync into bundle entry objects', function() {
+    assert.deepEqual(bundleInfoFromAssetEntry('package-name/'), {
+      isValid: true,
+      isNewBundle: true,
+      bundleName: 'package-name',
+      assetName: undefined,
+      assetType: undefined
+    }, 'package-name/');
+
+    assert.deepEqual(bundleInfoFromAssetEntry('package-name/path/'), {
+      isValid: false,
+      isNewBundle: false,
+      bundleName: 'package-name',
+      assetName: 'path',
+      assetType: undefined
+    }, 'package-name/path/');
+
+    assert.deepEqual(bundleInfoFromAssetEntry('package-name/path/asset.js'), {
+      isValid: true,
+      isNewBundle: false,
+      bundleName: 'package-name',
+      assetName: 'asset.js',
+      assetType: 'js'
+    }, 'package-name/path/asset.js');
+  });
+
+  it('converts scoped paths from walkSync into bundle entry objects', function() {
+    assert.deepEqual(bundleInfoFromAssetEntry('@scope/'), {
+      isValid: false
+    }, '@scope/');
+
+    assert.deepEqual(bundleInfoFromAssetEntry('@scope/package-name/'), {
+      isValid: true,
+      isNewBundle: true,
+      bundleName: '@scope/package-name',
+      assetName: undefined,
+      assetType: undefined
+    }, '@scope/package-name/');
+
+    assert.deepEqual(bundleInfoFromAssetEntry('@scope/package-name/path/'), {
+      isValid: false,
+      isNewBundle: false,
+      bundleName: '@scope/package-name',
+      assetName: 'path',
+      assetType: undefined
+    }, '@scope/package-name/path/');
+
+    assert.deepEqual(bundleInfoFromAssetEntry('@scope/package-name/path/asset.js'), {
+      isValid: true,
+      isNewBundle: false,
+      bundleName: '@scope/package-name',
+      assetName: 'asset.js',
+      assetType: 'js'
+    }, '@scope/package-name/path/asset.js');
   });
 });

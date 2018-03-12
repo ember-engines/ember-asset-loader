@@ -6,10 +6,10 @@ node_js:
   - "4"
 
 sudo: false
+dist: trusty
 
 cache:
-  directories:
-    - $HOME/.npm
+  yarn: true
 
 env:
   global:
@@ -29,17 +29,17 @@ branches:
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPXRyZW50bXdpbGxpcwo=`
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9MjExZDUxOTAtNWQxYS00YzYzLWFhOGYtMjA1YmIzYzRlMGZmCg==`
-  - npm install -g npm@4
-  - npm config set spin false
-  - npm install $PHANTOM@$PHANTOM_V
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
+  - yarn install $PHANTOM@$PHANTOM_V
   - node_modules/$PHANTOM/bin/phantomjs --version
 
 install:
-  - npm install
+  - yarn install --no-lockfile --non-interactive
 
 script:
-  - npm run test:node
-  - npm run $SCRIPT
+  - yarn test:node
+  - yarn $SCRIPT
 
 after_script:
   - $AFTER_SCRIPT

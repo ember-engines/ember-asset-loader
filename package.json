@@ -16,7 +16,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember test",
-    "test:sauce": "ember sauce:connect && ember test --config-file testem.sauce.js --test-port 7000",
+    "test:sauce": "ember test --config-file testem.sauce.js --test-port 7000",
     "test:node": "mocha node-tests",
     "prepublish": "./bin/install-test-addons.sh"
   },

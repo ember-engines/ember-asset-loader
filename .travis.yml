@@ -6,18 +6,21 @@ node_js:
   - "4"
 
 sudo: false
+dist: trusty
+
+addons:
+  chrome: stable
 
 cache:
-  directories:
-    - $HOME/.npm
+  yarn: true
 
 env:
   global:
+    - BEFORE_SCRIPT="true"
     - AFTER_SCRIPT="true"
   matrix:
-    - PHANTOM=phantomjs PHANTOM_V=1.* SCRIPT="test"
-    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test"
-    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test:sauce" AFTER_SCRIPT="ember sauce:disconnect"
+    - SCRIPT="test"
+    - SCRIPT="test:sauce" BEFORE_SCRIPT="ember sauce:connect" AFTER_SCRIPT="ember sauce:disconnect"
 
 matrix:
   fast_finish: true
@@ -29,17 +32,18 @@ branches:
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPXRyZW50bXdpbGxpcwo=`
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9MjExZDUxOTAtNWQxYS00YzYzLWFhOGYtMjA1YmIzYzRlMGZmCg==`
-  - npm install -g npm@4
-  - npm config set spin false
-  - npm install $PHANTOM@$PHANTOM_V
-  - node_modules/$PHANTOM/bin/phantomjs --version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - npm install
+  - yarn install --no-lockfile --non-interactive
+
+before_script:
+  - $BEFORE_SCRIPT
 
 script:
-  - npm run test:node
-  - npm run $SCRIPT
+  - yarn test:node
+  - yarn $SCRIPT
 
 after_script:
   - $AFTER_SCRIPT

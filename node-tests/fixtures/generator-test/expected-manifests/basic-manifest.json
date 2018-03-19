@@ -1,5 +1,25 @@
 {
   "bundles": {
+    "@scope/pkg": {
+      "assets": [
+        {
+          "type": "css",
+          "uri": "/bundles/@scope/pkg/assets/engine.css"
+        },
+        {
+          "type": "js",
+          "uri": "/bundles/@scope/pkg/assets/engine.js"
+        },
+        {
+          "type": "css",
+          "uri": "/bundles/@scope/pkg/assets/vendor.css"
+        },
+        {
+          "type": "js",
+          "uri": "/bundles/@scope/pkg/assets/vendor.js"
+        }
+      ]
+    },
     "blog": {
       "assets": [
         {

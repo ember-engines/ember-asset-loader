@@ -14,17 +14,6 @@ addons:
 cache:
   yarn: true
 
-env:
-  global:
-    - BEFORE_SCRIPT="true"
-    - AFTER_SCRIPT="true"
-  matrix:
-    - SCRIPT="test"
-    - SCRIPT="test:sauce" BEFORE_SCRIPT="ember sauce:connect" AFTER_SCRIPT="ember sauce:disconnect"
-
-matrix:
-  fast_finish: true
-
 branches:
   only:
     - master
@@ -36,14 +25,36 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install --no-lockfile --non-interactive
+  - yarn install --frozen-lockfile --non-interactive
 
-before_script:
-  - $BEFORE_SCRIPT
+stages:
+  - test
+  - additional tests
 
-script:
-  - yarn test:node
-  - yarn $SCRIPT
+jobs:
+  fail_fast: true
 
-after_script:
-  - $AFTER_SCRIPT
+  include:
+    # runs tests in chrome with current locked deps and linting
+
+    - env: NAME=test # used only to make Travis UI show description
+      script:
+        - yarn test:node
+        - yarn test
+
+    # If that passes:
+    # - run tests in other browsers
+    # - run tests without pinned dependencies to catch issues with new versions
+
+    - stage: additional tests
+      env: NAME=test sauce
+      script:
+        - ember sauce:connect
+        - yarn test:sauce
+        - ember sauce:disconnect
+
+    - env: NAME=floating dependencies
+      install: yarn install --no-lockfile --non-interactive
+      script:
+        - yarn test:node
+        - yarn test

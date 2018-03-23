@@ -1,3 +1,8 @@
+v0.4.2 / 2018-03-23
+===================
+
+  * Fix issues with scoped bundles (e.g. engines within a scope).
+
 v0.4.1 / 2017-10-06
 ===================
 

@@ -65,11 +65,9 @@ describe('asset-manifest-inserter', function() {
         var output = results.directory;
         var indexFilePath = path.join(output, 'index.html');
         var testIndexFilePath = path.join(output, 'tests', 'index.html');
-        var manifestFilePath = path.join(inputTrees[0], 'asset-manifest.json')
 
         var index = fs.readFileSync(indexFilePath, { encoding: 'utf8' });
         var testIndex = fs.readFileSync(testIndexFilePath, { encoding: 'utf8' });
-        var assetManifest = fs.readJsonSync(manifestFilePath);
 
         var appNeedle = 'herp-de-derp';
         assert.notEqual(index.indexOf(appNeedle), -1);

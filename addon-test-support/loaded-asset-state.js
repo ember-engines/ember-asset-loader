@@ -21,9 +21,9 @@ function has(array, item) {
  * @return {Boolean}
  */
 function once(fn, context) {
-  var result;
+  let result;
 
-  return function () {
+  return () => {
     if (fn) {
       result = fn.apply(context || this, arguments);
       fn = null;

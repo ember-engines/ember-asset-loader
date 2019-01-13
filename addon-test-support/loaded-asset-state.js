@@ -17,8 +17,9 @@ function has(array, item) {
 
 /**
  * Returns a function which you only want to run once
- *
- * @return {Boolean}
+ * @param {Function} fn
+ * @param {Any} context
+ * @return {Function|null}
  */
 function once(fn, context) {
   let result;

@@ -16,6 +16,21 @@ function has(array, item) {
 }
 
 /**
+ * Determines if the function already called.
+ *
+ * @return {Boolean}
+ */
+function canOnlyFireOnce() {
+  let executed = false;
+  return () => {
+    if (!executed) {
+      executed = true;
+    }
+    return executed;
+  };
+}
+
+/**
  * Removes a DOM Node from the document.
  *
  * @param {Node} node
@@ -111,7 +126,9 @@ export function cacheLoadedAssetState() {
  * @return {Void}
  */
 export function resetLoadedAssetState() {
-  Ember.Logger.info('Resetting loaded asset state. This will attempt to restore the state of loaded assets to the last cached value. If an asset modified some global state, we cannot guarantee it will be reset. For more information see: https://github.com/trentmwillis/ember-asset-loader#resetting-test-state');
+  if (canOnlyFireOnce()) {
+    Ember.Logger.info('Resetting loaded asset state. This will attempt to restore the state of loaded assets to the last cached value. If an asset modified some global state, we cannot guarantee it will be reset. For more information see: https://github.com/trentmwillis/ember-asset-loader#resetting-test-state');
+  }
 
   const {
     requireEntries: currentRequireEntries,

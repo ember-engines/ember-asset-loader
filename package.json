@@ -48,7 +48,6 @@
     "broccoli-funnel": "^1.0.8",
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.7.2",
-    "exists-sync": "^0.0.4",
     "fs-extra": "^4.0.1",
     "object-assign": "^4.1.0",
     "walk-sync": "^0.3.2"

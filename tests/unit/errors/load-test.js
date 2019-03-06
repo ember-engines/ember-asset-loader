@@ -8,6 +8,8 @@ test('constructor() - accepts a message and a loader', function(assert) {
   const loader = {};
   const error = new LoadError(message, loader);
 
+  assert.ok(error instanceof Error, 'LoadError inherits Error');
+  assert.ok(error.stack, 'stack is preserved');
   assert.equal(error.message, message, 'message is set');
   assert.strictEqual(error.loader, loader, 'loader is set');
 });

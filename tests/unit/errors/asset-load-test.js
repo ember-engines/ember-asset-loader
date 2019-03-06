@@ -16,6 +16,8 @@ module('Unit | Error | asset-load', {
 
 test('constructor() - accepts an asset and the original error', function(assert) {
   const error = new AssetLoadError(this.loader, this.asset, this.originalError);
+  assert.ok(error instanceof Error, 'AssetLoadError inherits Error');
+  assert.ok(error.stack, 'stack is preserved');
   assert.strictEqual(error.asset, this.asset, 'asset is set');
 });
 

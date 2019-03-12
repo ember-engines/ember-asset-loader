@@ -3,7 +3,7 @@ language: node_js
 node_js:
   # we recommend testing addons with the same minimum supported node version as Ember CLI
   # so that your addon works for all apps
-  - "4"
+  - "6"
 
 sudo: false
 dist: trusty
@@ -21,7 +21,7 @@ branches:
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPXRyZW50bXdpbGxpcwo=`
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9MjExZDUxOTAtNWQxYS00YzYzLWFhOGYtMjA1YmIzYzRlMGZmCg==`
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version "1.12.1"
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s
 
 install:
   - yarn install --frozen-lockfile --non-interactive

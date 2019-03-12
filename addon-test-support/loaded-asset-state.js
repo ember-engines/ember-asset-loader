@@ -53,7 +53,7 @@ function getAll(selector) {
  * @return {Void}
  */
 function resetRequireEntry(entry) {
-  delete requirejs.entries[entry];
+  delete self.requirejs.entries[entry];
 }
 
 /**
@@ -84,7 +84,7 @@ function compareAndIterate(initial, current, diffHandler) {
  */
 export function getLoadedAssetState() {
   return {
-    requireEntries: Object.keys(requirejs.entries),
+    requireEntries: Object.keys(self.requirejs.entries),
     scripts: getAll('script'),
     links: getAll('link')
   };

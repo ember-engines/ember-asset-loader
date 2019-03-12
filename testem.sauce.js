@@ -76,24 +76,6 @@ module.exports = {
         "--u"
       ],
       "protocol": "browser"
-    },
-    "SL_IE9": {
-      "exe": "ember",
-      "args": [
-        "sauce:launch",
-        "-b",
-        "internet explorer",
-        "-v",
-        "9",
-        "--vi",
-        "public",
-        "-p",
-        "Windows 7",
-        "--at",
-        "--no-ct",
-        "--u"
-      ],
-      "protocol": "browser"
     }
   },
   "launch_in_ci": [
@@ -101,6 +83,5 @@ module.exports = {
     "SL_EDGE",
     "SL_IE11",
     "SL_IE10",
-    "SL_IE9"
   ]
 };

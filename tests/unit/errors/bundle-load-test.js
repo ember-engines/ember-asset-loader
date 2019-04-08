@@ -15,6 +15,8 @@ module('Unit | Error | bundle-load', {
 
 test('constructor() - accepts a bundleName and errors array', function(assert) {
   const error = new BundleLoadError(this.loader, this.bundleName, this.errors);
+  assert.ok(error instanceof Error, 'BundleLoadError inherits Error');
+  assert.ok(error.stack, 'stack is preserved');
   assert.equal(error.bundleName, this.bundleName, 'bundleName is set');
   assert.strictEqual(error.errors, this.errors, 'errors is set');
 });

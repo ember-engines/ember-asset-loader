@@ -137,6 +137,21 @@ describe('manifest-generator', function() {
       return verifyInsertedManifest('cdn-manifest.json', 'index.html', function(filePath) {
         return 'http://cdn.io' + filePath;
       });
-    })
+    });
+
+    it('uses filesToIgnore', co.wrap(function* () {
+      const generator = createGenerator({
+        filesToIgnore: [/chat/]
+      });
+
+      var inputTree = path.join(__dirname, 'fixtures', 'generator-test');
+      var processedTree = generator.postprocessTree('all', inputTree);
+      output = createBuilder(processedTree);
+
+      yield output.build();
+      var manifest = fs.readJsonSync(output.path('asset-manifest.json'));
+
+      assert.deepEqual(manifest.bundles.chat.assets, []);
+    }));
   });
 })

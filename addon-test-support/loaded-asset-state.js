@@ -16,24 +16,6 @@ function has(array, item) {
 }
 
 /**
- * Returns a function which you only want to run once
- * @param {Function} fn
- * @param {Any} context
- * @return {Function|null}
- */
-function once(fn, context) {
-  let result;
-
-  return () => {
-    if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
-    }
-    return result;
-  };
-}
-
-/**
  * Removes a DOM Node from the document.
  *
  * @param {Node} node
@@ -129,11 +111,6 @@ export function cacheLoadedAssetState() {
  * @return {Void}
  */
 export function resetLoadedAssetState() {
-  const canOnlyLogOnce = once(() => {
-    Ember.Logger.info('Resetting loaded asset state. This will attempt to restore the state of loaded assets to the last cached value. If an asset modified some global state, we cannot guarantee it will be reset. For more information see: https://github.com/trentmwillis/ember-asset-loader#resetting-test-state');
-  });
-  canOnlyLogOnce();
-
   const {
     requireEntries: currentRequireEntries,
     scripts: currentScriptTags,

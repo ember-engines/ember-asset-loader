@@ -16,6 +16,24 @@ function has(array, item) {
 }
 
 /**
+ * Returns a function which you only want to run once
+ * @param {Function} fn
+ * @param {Any} context
+ * @return {Function|null}
+ */
+function once(fn, context) {
+  let result;
+
+  return () => {
+    if (fn) {
+      result = fn.apply(context || this, arguments);
+      fn = null;
+    }
+    return result;
+  };
+}
+
+/**
  * Removes a DOM Node from the document.
  *
  * @param {Node} node

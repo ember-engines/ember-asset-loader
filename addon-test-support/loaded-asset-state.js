@@ -1,5 +1,3 @@
-import Ember from 'ember';
-
 let cachedRequireEntries;
 let cachedScriptTags;
 let cachedLinkTags;

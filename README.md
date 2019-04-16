@@ -77,6 +77,20 @@ var app = new EmberApp(defaults, {
 
 The function receives the `filePath` for each asset and must return a string.
 
+### Ignore Files
+
+To ignore specific files during the manifest generation, use `filesToIgnore`.
+Both string and regex patterns are accepted.
+
+
+```js
+var app = new EmberApp(defaults, {
+  assetLoader: {
+    filesToIgnore: [/foo-engine/**/engine-vendor.js$/, 'vendor.js']
+  }
+});
+```
+
 ### Using With `broccoli-asset-rev`
 
 You need to make sure that `broccoli-asset-rev` runs after your ManifestGenerator addon runs. Here is an example of how to do that:

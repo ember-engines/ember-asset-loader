@@ -3,24 +3,16 @@ language: node_js
 node_js:
   # we recommend testing addons with the same minimum supported node version as Ember CLI
   # so that your addon works for all apps
-  - "4"
+  - "6"
 
 sudo: false
+dist: trusty
+
+addons:
+  chrome: stable
 
 cache:
-  directories:
-    - $HOME/.npm
-
-env:
-  global:
-    - AFTER_SCRIPT="true"
-  matrix:
-    - PHANTOM=phantomjs PHANTOM_V=1.* SCRIPT="test"
-    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test"
-    - PHANTOM=phantomjs-prebuilt PHANTOM_V=* SCRIPT="test:sauce" AFTER_SCRIPT="ember sauce:disconnect"
-
-matrix:
-  fast_finish: true
+  yarn: true
 
 branches:
   only:
@@ -29,17 +21,39 @@ branches:
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPXRyZW50bXdpbGxpcwo=`
   - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9MjExZDUxOTAtNWQxYS00YzYzLWFhOGYtMjA1YmIzYzRlMGZmCg==`
-  - npm install -g npm@4
-  - npm config set spin false
-  - npm install $PHANTOM@$PHANTOM_V
-  - node_modules/$PHANTOM/bin/phantomjs --version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s
 
 install:
-  - npm install
+  - yarn install --frozen-lockfile --non-interactive
 
-script:
-  - npm run test:node
-  - npm run $SCRIPT
+stages:
+  - test
+  - additional tests
 
-after_script:
-  - $AFTER_SCRIPT
+jobs:
+  fail_fast: true
+
+  include:
+    # runs tests in chrome with current locked deps and linting
+
+    - env: NAME=test # used only to make Travis UI show description
+      script:
+        - yarn test:node
+        - yarn test
+
+    # If that passes:
+    # - run tests in other browsers
+    # - run tests without pinned dependencies to catch issues with new versions
+
+    - stage: additional tests
+      env: NAME=test sauce
+      script:
+        - ember sauce:connect
+        - yarn test:sauce
+        - ember sauce:disconnect
+
+    - env: NAME=floating dependencies
+      install: yarn install --no-lockfile --non-interactive
+      script:
+        - yarn test:node
+        - yarn test

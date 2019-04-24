@@ -156,7 +156,7 @@ test('loadBundle() - subsequent call after rejection returns a new promise', fun
 
       return serviceRetry;
     }
-  ).then(shouldHappen(assert), shouldNotHappen(assert));
+  );
 });
 
 test('loadBundle() - retrying a load twice returns the same promise', function(assert) {
@@ -283,7 +283,7 @@ test('loadAsset() - subsequent call after rejection returns a new promise', func
 
       return serviceRetry;
     }
-  ).then(shouldHappen(assert), shouldNotHappen(assert));
+  );
 });
 
 test('loadAsset() - retrying a load twice returns the same promise', function(assert) {

@@ -1,6 +1,7 @@
 /bower_components
 /config
 /dist
+/.git
 /tests
 /node-tests
 /tmp

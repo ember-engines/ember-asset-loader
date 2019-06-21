@@ -1,3 +1,56 @@
+## v0.6.1 (2019-06-21)
+
+#### :bug: Bug Fix
+* [#84](https://github.com/ember-engines/ember-asset-loader/pull/84) add .git to npmignore ([@ecoutlee-hortau](https://github.com/ecoutlee-hortau))
+
+#### Committers: 1
+- [@ecoutlee-hortau](https://github.com/ecoutlee-hortau)
+
+
+## v0.6.0 (2019-06-10)
+
+#### :memo: Documentation
+* [#75](https://github.com/ember-engines/ember-asset-loader/pull/75) Removes needless Warning on resetLoadedAssetState   ([@villander](https://github.com/villander))
+
+#### Committers: 1
+- Michael Villander ([@villander](https://github.com/villander))
+
+
+## v0.5.1 (2019-03-11)
+
+#### :bug: Bug Fix
+* [#78](https://github.com/ember-engines/ember-asset-loader/pull/78) Properly extend from Error base class ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 1
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
+
+## v0.5.0 (2019-03-11)
+
+#### :boom: Breaking Change
+* [#80](https://github.com/ember-engines/ember-asset-loader/pull/80) Drop Node 4 support. ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 1
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+
+
+## v0.4.4 (2019-03-11)
+
+#### :rocket: Enhancement
+* [#79](https://github.com/ember-engines/ember-asset-loader/pull/79) Add optional to configure additional files to ignore ([@sangm](https://github.com/sangm))
+
+#### :bug: Bug Fix
+* [#72](https://github.com/ember-engines/ember-asset-loader/pull/72) Use fx.existsSync and drop exists-sync dependency ([@scottkidder](https://github.com/scottkidder))
+
+#### :house: Internal
+* [#64](https://github.com/ember-engines/ember-asset-loader/pull/64) Minor fixes ([@eventualbuddha](https://github.com/eventualbuddha))
+
+#### Committers: 4
+- Brian Donovan ([@eventualbuddha](https://github.com/eventualbuddha))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Sang Mercado ([@sangm](https://github.com/sangm))
+- Scott Kidder ([@scottkidder](https://github.com/scottkidder))
+
 v0.4.2 / 2018-03-23
 ===================
 

@@ -6,6 +6,8 @@ import require from 'require';
 module('Unit | asset-manifest', function(hooks) {
   hooks.beforeEach(function() {
     resetModules();
+    console.log(this.owner);
+    debugger;
     this.originalNodeModule = requirejs.entries['dummy/config/node-asset-manifest'];
   });
 

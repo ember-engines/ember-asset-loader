@@ -1,7 +1,6 @@
 import require from 'require';
 import environment from './environment';
 
-
 const modulePrefix = environment.modulePrefix;
 const metaName = `${modulePrefix}/config/asset-manifest`;
 const nodeName = `${modulePrefix}/config/node-asset-manifest`;

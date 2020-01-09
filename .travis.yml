@@ -46,7 +46,8 @@ jobs:
     # - run tests without pinned dependencies to catch issues with new versions
 
     - stage: additional tests
-      env: NAME=test sauce
+      name: test sauce
+      env: SAUCE_VERSION='latest'
       script:
         - ember sauce:connect
         - yarn test:sauce

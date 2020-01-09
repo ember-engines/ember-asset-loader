@@ -47,7 +47,7 @@ jobs:
 
     - stage: additional tests
       name: test sauce
-      env: SAUCE_VERSION='latest'
+      env: SAUCE_VERSION='4.5.4'
       script:
         - ember sauce:connect
         - yarn test:sauce

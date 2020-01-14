@@ -54,7 +54,7 @@ jobs:
         - ember sauce:disconnect
 
     - env: NAME=floating dependencies
-      install: yarn install --no-lockfile --non-interactive
+      install: yarn install --no-lockfile --non-interactive --ignore-engines
       script:
         - yarn test:node
         - yarn test

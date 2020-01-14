@@ -2,7 +2,7 @@
 module.exports = {
   "framework": "qunit",
   "test_page": "tests/index.html?hidepassed",
-  "parallel": 4,
+  "parallel": 2,
   "disable_watching": true,
   "launchers": {
     "SL_CHROME": {

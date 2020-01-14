@@ -6,74 +6,70 @@ module.exports = {
   "disable_watching": true,
   "launchers": {
     "SL_CHROME": {
-      "exe": "ember",
+      "exe": "./node_modules/.bin/ember-cli-sauce",
       "args": [
-        "sauce:launch",
         "-b",
         "chrome",
         "-v",
         "47",
-        "--vi",
+        "--visibility",
         "public",
-        "-p",
+        "--platform",
         "Windows 10",
-        "--at",
-        "--no-ct",
-        "--u"
+        "--attach",
+        "--no-connect",
+        "--url"
       ],
       "protocol": "browser"
     },
     "SL_EDGE": {
-      "exe": "ember",
+      "exe": "./node_modules/.bin/ember-cli-sauce",
       "args": [
-        "sauce:launch",
         "-b",
         "microsoftedge",
         "-v",
         "14",
-        "--vi",
+        "--visibility",
         "public",
-        "-p",
+        "--platform",
         "Windows 10",
-        "--at",
-        "--no-ct",
-        "--u"
+        "--attach",
+        "--no-connect",
+        "--url"
       ],
       "protocol": "browser"
     },
     "SL_IE11": {
-      "exe": "ember",
+      "exe": "./node_modules/.bin/ember-cli-sauce",
       "args": [
-        "sauce:launch",
         "-b",
         "internet explorer",
         "-v",
         "11",
-        "--vi",
+        "--visibility",
         "public",
-        "-p",
+        "--platform",
         "Windows 8.1",
-        "--at",
-        "--no-ct",
-        "--u"
+        "--attach",
+        "--no-connect",
+        "--url"
       ],
       "protocol": "browser"
     },
     "SL_IE10": {
-      "exe": "ember",
+      "exe": "./node_modules/.bin/ember-cli-sauce",
       "args": [
-        "sauce:launch",
         "-b",
         "internet explorer",
         "-v",
         "10",
-        "--vi",
+        "--visibility",
         "public",
-        "-p",
+        "--platform",
         "Windows 8",
-        "--at",
-        "--no-ct",
-        "--u"
+        "--attach",
+        "--no-connect",
+        "--url"
       ],
       "protocol": "browser"
     }

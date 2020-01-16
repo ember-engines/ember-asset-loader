@@ -7,7 +7,7 @@ module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
     'ember-cli-babel': {
       // Needed because ember-maybe-import-regenerator uses Promise
-      includePolyfill: (EmberApp.env() === 'test'),
+      includePolyfill: (EmberAddon.env() === 'test'),
     },
   });
 

@@ -1,10 +1,8 @@
-import Ember from 'ember';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import { visit, currentRouteName } from '@ember/test-helpers';
-
-const { run } = Ember;
-const { Promise } = Ember.RSVP;
+import { run } from '@ember/runloop';
+import { Promise } from 'rsvp';
 
 function waitFor(checkerFn, timeout = 1000) {
   let start = Date.now();

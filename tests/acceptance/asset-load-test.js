@@ -1,9 +1,8 @@
-import Ember from 'ember';
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
-
-const { run } = Ember;
-const { Promise } = Ember.RSVP;
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { visit, currentRouteName } from '@ember/test-helpers';
+import { run } from '@ember/runloop';
+import { Promise } from 'rsvp';
 
 function waitFor(checkerFn, timeout = 1000) {
   let start = Date.now();
@@ -25,22 +24,22 @@ function waitFor(checkerFn, timeout = 1000) {
   });
 }
 
-moduleForAcceptance('Acceptance | asset-load');
+module('Acceptance | asset-load', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('visiting a route which loads a bundle', function(assert) {
-  assert.expect(7);
+  test('visiting a route which loads a bundle', async function(assert) {
+    assert.expect(7);
 
-  const container = document.getElementById('ember-testing');
-  const originalContainerStyle = window.getComputedStyle(container);
-  const originalBackgroundColor = originalContainerStyle.backgroundColor;
-  const originalColor = originalContainerStyle.color;
+    const container = document.getElementById('ember-testing');
+    const originalContainerStyle = window.getComputedStyle(container);
+    const originalBackgroundColor = originalContainerStyle.backgroundColor;
+    const originalColor = originalContainerStyle.color;
 
-  const containerText = container.innerText;
-  assert.equal(containerText, '', 'test container is empty before load');
+    let containerText = container.innerText;
+    assert.equal(containerText, '', 'test container is empty before load');
 
-  visit('/');
+    await visit('/');
 
-  andThen(function() {
     assert.equal(currentRouteName(), 'index', 'transitioned ');
 
     const testScriptText = container.querySelector('h2').innerText;
@@ -49,7 +48,7 @@ test('visiting a route which loads a bundle', function(assert) {
     const routeText = container.querySelector('h1').innerText;
     assert.equal(routeText, 'Welcome!', 'route was loaded correctly');
 
-    const containerText = container.innerText;
+    containerText = container.innerText;
     assert.ok(containerText.indexOf(testScriptText) < containerText.indexOf(routeText), 'test script was executed before route load');
 
     return waitFor(() => {
@@ -66,16 +65,14 @@ test('visiting a route which loads a bundle', function(assert) {
         assert.notEqual(containerStyle.color, originalColor, 'color is different after css load');
       });
   });
-});
 
-test('visiting a route which fails to load a script removes the node from DOM', function(assert) {
-  assert.expect(2);
+  test('visiting a route which fails to load a script removes the node from DOM', async function(assert) {
+    assert.expect(2);
 
-  const getScript = () => document.querySelector('script[src="foo.js"]');
+    const getScript = () => document.querySelector('script[src="foo.js"]');
 
-  visit('asset-error');
+    await visit('asset-error');
 
-  andThen(function() {
     assert.equal(currentRouteName(), 'asset-error', 'transitioned ');
 
     return waitFor(() => !getScript())

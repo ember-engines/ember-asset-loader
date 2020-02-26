@@ -14,8 +14,8 @@ export default class BundleLoadError extends LoadError {
    * the name of the bundle that was attempting to load.
    *
    * @param {AssetLoader} assetLoader
-   * @param {Asset} asset
-   * @param {Error} error
+   * @param {String} bundleName
+   * @param {Error[]} errors
    */
   constructor(assetLoader, bundleName, errors) {
     super(`The bundle "${bundleName}" failed to load.`, assetLoader);

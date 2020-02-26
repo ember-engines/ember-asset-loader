@@ -148,7 +148,7 @@ export default Ember.Service.extend({
    *
    * @public
    * @param {String} type
-   * @param {Funciton} loader
+   * @param {Function} loader
    * @return {Void}
    */
   defineLoader(type, loader) {
@@ -190,7 +190,7 @@ export default Ember.Service.extend({
    * @param {String} type
    * @param {String} key
    * @param {Boolean} evict
-   * @return {Any}
+   * @return {*}
    */
   _getFromCache(type, key, evict) {
     if (evict) {
@@ -207,8 +207,8 @@ export default Ember.Service.extend({
    * @private
    * @param {String} type
    * @param {String} key
-   * @param {Any} value
-   * @return {Any}
+   * @param {*} value
+   * @return {*}
    */
   _setInCache(type, key, value) {
     return (this.__cache[type][key] = value);

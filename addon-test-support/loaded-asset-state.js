@@ -6,7 +6,7 @@ let cachedLinkTags;
  * Determines whether an array contains the provided item.
  *
  * @param {Array} array
- * @param {Any} item
+ * @param {*} item
  * @return {Boolean}
  */
 function has(array, item) {

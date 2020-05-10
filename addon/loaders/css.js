@@ -24,7 +24,12 @@ export default nodeLoader(function css(uri) {
       let link;
       try {
         // Try using the default onload/onerror handlers...
-        link = createLoadElement('link', resolve, reject);
+        const link = createLoadElement('link', resolve, function(error) {
+          if (this.parentNode) {
+            this.parentNode.removeChild(this);
+          }
+          reject(error);
+        });
 
         link.rel = 'stylesheet';
         link.href = uri;

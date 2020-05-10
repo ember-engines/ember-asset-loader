@@ -30,7 +30,12 @@ export default nodeLoader(function js(uri) {
     //
     scheduleWork(() => {
       try {
-        const script = createLoadElement('script', resolve, reject);
+        const script = createLoadElement('script', resolve, function(error) {
+          if (this.parentNode) {
+            this.parentNode.removeChild(this);
+          }
+          reject(error);
+        });
 
         script.src = uri;
         script.async = false;

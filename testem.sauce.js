@@ -55,29 +55,11 @@ module.exports = {
         "--url"
       ],
       "protocol": "browser"
-    },
-    "SL_IE10": {
-      "exe": "./node_modules/.bin/ember-cli-sauce",
-      "args": [
-        "-b",
-        "internet explorer",
-        "-v",
-        "10",
-        "--visibility",
-        "public",
-        "--platform",
-        "Windows 8",
-        "--attach",
-        "--no-connect",
-        "--url"
-      ],
-      "protocol": "browser"
     }
   },
   "launch_in_ci": [
     "SL_CHROME",
     "SL_EDGE",
-    "SL_IE11",
-    "SL_IE10",
+    "SL_IE11"
   ]
 };

@@ -80,7 +80,7 @@ export default Ember.Service.extend({
     if (cachedPromise) {
       return cachedPromise;
     }
-
+    
     const bundle = this._getBundle(name);
 
     const dependencies = bundle.dependencies || [];

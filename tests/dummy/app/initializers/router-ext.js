@@ -2,8 +2,6 @@ import Ember from 'ember';
 
 let hasRan = false;
 
-let newSetup = true;
-
 function initialize() {
   if (hasRan) { return; }
 

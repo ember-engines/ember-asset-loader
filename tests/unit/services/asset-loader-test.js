@@ -315,12 +315,12 @@ module('Unit | Service | asset-loader', function(hooks) {
   });
 
   test('loadAsset() - js - handles successful load', function(assert) {
-    assert.expect(1);
+    assert.expect(0);
 
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'js', uri: '/unit-test.js' };
 
-    return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+    return service.loadAsset(asset);
   });
 
   test('loadAsset() - js - handles failed load', function(assert) {
@@ -329,7 +329,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'js', uri: '/unit-test.jsss' };
 
-    return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+    return service.loadAsset(asset).catch(() => assert.ok(true, 'loadAsset should reject'));
   });
 
   test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function(assert) {
@@ -364,12 +364,12 @@ module('Unit | Service | asset-loader', function(hooks) {
   });
 
   test('loadAsset() - css - handles successful load', function(assert) {
-    assert.expect(1);
+    assert.expect(0);
 
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'css', uri: '/unit-test.css' };
 
-    return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+    return service.loadAsset(asset);
   });
 
   test('loadAsset() - css - handles failed load', function(assert) {
@@ -382,9 +382,11 @@ module('Unit | Service | asset-loader', function(hooks) {
     // non-Chrome browsers to either resolve or reject (they should do something).
     var isChrome = !!window.chrome && window.navigator.vendor === 'Google Inc.';
     if (isChrome) {
-      return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+      return service.loadAsset(asset).catch(() => assert.ok(true, 'loadAsset should reject'));
     } else {
-      return service.loadAsset(asset).then(shouldHappen(assert), shouldHappen(assert));
+      return service.loadAsset(asset)
+      .then(() => assert.ok(true, 'loadAsset may resolve'))
+      .catch(() => assert.ok(true, 'loadAsset may reject'));
     }
   });
 

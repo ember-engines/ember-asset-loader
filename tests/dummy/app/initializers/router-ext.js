@@ -7,6 +7,7 @@ function initialize() {
 
   hasRan = true;
 
+  //TODO: this reopen should be done outside of the initialize function
   Ember.Router.reopen({
     assetLoader: Ember.inject.service(),
 

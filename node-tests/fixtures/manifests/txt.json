@@ -13,9 +13,6 @@
       "assets": [
         { "uri": "/bundles/chat/assets/secret.txt", "type": "txt" }
       ]
-    },
-    "shared": {
-      "assets": []
     }
   }
 }

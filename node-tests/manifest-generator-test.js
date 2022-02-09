@@ -151,7 +151,7 @@ describe('manifest-generator', function() {
       yield output.build();
       var manifest = fs.readJsonSync(output.path('asset-manifest.json'));
 
-      assert.deepEqual(manifest.bundles.chat.assets, []);
+      assert.strictEqual(manifest.bundles.chat, undefined);
     }));
   });
 })

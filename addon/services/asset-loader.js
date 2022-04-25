@@ -89,6 +89,12 @@ export default Ember.Service.extend({
     const assets = bundle.assets || [];
     const assetPromises = assets.map((asset) => this.loadAsset(asset, retryLoad));
 
+    // ember-auto-import creates window.__eaiEngineLookup when a lazy engine uses eai v2.
+    // this enables lazy engine's imports to be lazy themselves.
+    if (window.__eaiEngineLookup && window.__eaiEngineLookup[name]) {
+      assetPromises.push(window.__eaiEngineLookup[name]());
+    }
+
     const bundlePromise = RSVP.allSettled([ ...dependencyPromises, ...assetPromises ]);
 
     const bundleWithFail = bundlePromise.then((promises) => {

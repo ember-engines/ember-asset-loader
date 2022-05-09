@@ -5,6 +5,13 @@
 
 Provides experimental support for the [Asset Manifest RFC](https://github.com/emberjs/rfcs/pull/153) and [Asset Loader Service RFC](https://github.com/emberjs/rfcs/pull/158).
 
+
+## Compatibility
+
+* Ember.js v3.24 or above
+* Ember CLI v3.24 or above
+* Node.js v14 or above
+
 ## Usage
 
 Ember Asset Loader does three primary things:

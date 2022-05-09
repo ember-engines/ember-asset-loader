@@ -1,3 +1,31 @@
+## v1.0.0 (2022-05-09)
+
+#### :boom: Breaking Change
+* [#130](https://github.com/ember-engines/ember-asset-loader/pull/130) Drop Node < 14 ([@rwjblue](https://github.com/rwjblue))
+* [#104](https://github.com/ember-engines/ember-asset-loader/pull/104) Update addon to ember-cli@3.12 ([@villander](https://github.com/villander))
+* [#92](https://github.com/ember-engines/ember-asset-loader/pull/92) Fix travis errors that are occurring due to ember-cli-sauce config; Bumped node version to 8.x+ and therefore bumped package version to 1.x ([@evanfarina](https://github.com/evanfarina))
+
+#### :rocket: Enhancement
+* [#132](https://github.com/ember-engines/ember-asset-loader/pull/132) update dependencies ([@rwjblue](https://github.com/rwjblue))
+* [#127](https://github.com/ember-engines/ember-asset-loader/pull/127) Add support code for future ember-auto-import versions to be used within lazy Ember Engines ([@thoov](https://github.com/thoov))
+
+#### :bug: Bug Fix
+* [#123](https://github.com/ember-engines/ember-asset-loader/pull/123) Only add to manifest when necessary ([@brendenpalmer](https://github.com/brendenpalmer))
+
+#### :memo: Documentation
+* [#98](https://github.com/ember-engines/ember-asset-loader/pull/98) Fix various JSDoc issues ([@loganrosen](https://github.com/loganrosen))
+
+#### :house: Internal
+* [#90](https://github.com/ember-engines/ember-asset-loader/pull/90) Transform tests to 'setup-test' syntax ([@evanfarina](https://github.com/evanfarina))
+
+#### Committers: 6
+- Brenden Palmer ([@brendenpalmer](https://github.com/brendenpalmer))
+- Evan Farina ([@evanfarina](https://github.com/evanfarina))
+- Logan Rosen ([@loganrosen](https://github.com/loganrosen))
+- Michael Villander ([@villander](https://github.com/villander))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
 ## v0.6.1 (2019-06-21)
 
 #### :bug: Bug Fix

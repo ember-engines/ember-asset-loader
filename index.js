@@ -1,8 +1,8 @@
 /* eslint-env node */
 'use strict';
 
-var Funnel = require('broccoli-funnel');
-var findHost = require('./lib/utils/find-host');
+const funnel = require('broccoli-funnel');
+const findHost = require('./lib/utils/find-host');
 
 module.exports = {
   name: 'ember-asset-loader',
@@ -14,11 +14,11 @@ module.exports = {
    * @override
    */
   treeForApp: function() {
-    var tree = this._super.treeForApp.apply(this, arguments);
-    var app = findHost(this);
+    let tree = this._super.treeForApp.apply(this, arguments);
+    const app = findHost(this);
 
     if (app && app.options && app.options.assetLoader && app.options.assetLoader.noManifest) {
-      tree = new Funnel(tree, {
+      tree = funnel(tree, {
         exclude: [
           'config/asset-manifest.js',
           'instance-initializers/load-asset-manifest.js'

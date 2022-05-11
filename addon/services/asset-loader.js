@@ -1,3 +1,4 @@
+/* global __eaiEngineLookup */
 import RSVP from 'rsvp';
 import Ember from 'ember';
 import AssetLoadError from '../errors/asset-load';

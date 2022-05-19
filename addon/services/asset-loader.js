@@ -6,7 +6,7 @@ import BundleLoadError from '../errors/bundle-load';
 import JsLoader from '../loaders/js';
 import CssLoader from '../loaders/css';
 
-export function RETRY_LOAD_SECRET() { }
+export function RETRY_LOAD_SECRET() {}
 
 /**
  * Merges two manifests' bundles together and returns a new manifest.
@@ -23,7 +23,10 @@ function reduceManifestBundles(input, manifest) {
 
   // Merge the bundles together, checking for collisions
   return Object.keys(manifest.bundles).reduce((output, bundle) => {
-    Ember.assert(`The bundle "${bundle}" already exists.`, !output.bundles[bundle]);
+    Ember.assert(
+      `The bundle "${bundle}" already exists.`,
+      !output.bundles[bundle]
+    );
     output.bundles[bundle] = manifest.bundles[bundle];
     return output;
   }, input);
@@ -59,7 +62,9 @@ export default Ember.Service.extend({
    */
   pushManifest(manifest) {
     this.__manifests.push(manifest);
-    this.__manifest = this.__manifests.reduce(reduceManifestBundles, { bundles: {} });
+    this.__manifest = this.__manifests.reduce(reduceManifestBundles, {
+      bundles: {},
+    });
   },
 
   /**
@@ -76,7 +81,11 @@ export default Ember.Service.extend({
    * @return {Promise} bundlePromise
    */
   loadBundle(name, retryLoad) {
-    const cachedPromise = this._getFromCache('bundle', name, retryLoad === RETRY_LOAD_SECRET);
+    const cachedPromise = this._getFromCache(
+      'bundle',
+      name,
+      retryLoad === RETRY_LOAD_SECRET
+    );
 
     if (cachedPromise) {
       return cachedPromise;
@@ -85,10 +94,14 @@ export default Ember.Service.extend({
     const bundle = this._getBundle(name);
 
     const dependencies = bundle.dependencies || [];
-    const dependencyPromises = dependencies.map((dependency) => this.loadBundle(dependency, retryLoad));
+    const dependencyPromises = dependencies.map((dependency) =>
+      this.loadBundle(dependency, retryLoad)
+    );
 
     const assets = bundle.assets || [];
-    const assetPromises = assets.map((asset) => this.loadAsset(asset, retryLoad));
+    const assetPromises = assets.map((asset) =>
+      this.loadAsset(asset, retryLoad)
+    );
 
     // ember-auto-import creates window.__eaiEngineLookup when a lazy engine uses eai v2.
     // this enables lazy engine's imports to be lazy themselves.
@@ -96,10 +109,15 @@ export default Ember.Service.extend({
       assetPromises.push(__eaiEngineLookup[name]());
     }
 
-    const bundlePromise = RSVP.allSettled([ ...dependencyPromises, ...assetPromises ]);
+    const bundlePromise = RSVP.allSettled([
+      ...dependencyPromises,
+      ...assetPromises,
+    ]);
 
     const bundleWithFail = bundlePromise.then((promises) => {
-      const rejects = promises.filter((promise) => promise.state === 'rejected');
+      const rejects = promises.filter(
+        (promise) => promise.state === 'rejected'
+      );
       const errors = rejects.map((reject) => reject.reason);
 
       if (errors.length) {
@@ -128,7 +146,11 @@ export default Ember.Service.extend({
   loadAsset({ uri, type }, retryLoad) {
     const cacheKey = `${type}:${uri}`;
 
-    const cachedPromise = this._getFromCache('asset', cacheKey, retryLoad === RETRY_LOAD_SECRET);
+    const cachedPromise = this._getFromCache(
+      'asset',
+      cacheKey,
+      retryLoad === RETRY_LOAD_SECRET
+    );
 
     if (cachedPromise) {
       return cachedPromise;
@@ -172,7 +194,10 @@ export default Ember.Service.extend({
   getManifest() {
     const manifest = this.__manifest;
 
-    Ember.assert('No asset manifest found. Ensure you call pushManifest before attempting to use the AssetLoader.', manifest);
+    Ember.assert(
+      'No asset manifest found. Ensure you call pushManifest before attempting to use the AssetLoader.',
+      manifest
+    );
 
     return manifest;
   },
@@ -234,11 +259,17 @@ export default Ember.Service.extend({
 
     const bundles = manifest.bundles;
 
-    Ember.assert('Asset manifest does not list any available bundles.', Object.keys(bundles).length);
+    Ember.assert(
+      'Asset manifest does not list any available bundles.',
+      Object.keys(bundles).length
+    );
 
     const bundle = bundles[name];
 
-    Ember.assert(`No bundle with name "${name}" exists in the asset manifest.`, bundle);
+    Ember.assert(
+      `No bundle with name "${name}" exists in the asset manifest.`,
+      bundle
+    );
 
     return bundle;
   },
@@ -276,5 +307,5 @@ export default Ember.Service.extend({
    * @property __assetLoaders
    * @type {Object}
    */
-  __assetLoaders: undefined
+  __assetLoaders: undefined,
 });

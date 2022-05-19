@@ -10,5 +10,5 @@ export function initialize(instance) {
 
 export default {
   name: 'load-asset-manifest',
-  initialize
+  initialize,
 };

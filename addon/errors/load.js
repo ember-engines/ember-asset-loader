@@ -15,7 +15,7 @@ if (new Error().stack) {
 } else {
   captureErrorForStack = () => {
     try { __undef__(); } catch (e) { return e; } // eslint-disable-line
-  }
+  };
 }
 
 /**
@@ -31,15 +31,15 @@ export default function LoadError(message, assetLoader) {
   this.loader = assetLoader;
   this.stack = captureErrorForStack().stack;
 }
-LoadError.prototype = new Error;
+LoadError.prototype = new Error();
 
 /**
  * An abstract hook to define in a sub-class that specifies how to retry
  * loading the errored resource.
  */
-LoadError.prototype.retryLoad = function() {
+LoadError.prototype.retryLoad = function () {
   throw new Error(`You must define a behavior for 'retryLoad' in a subclass.`);
-}
+};
 
 /**
  * Invokes a specified method on the AssetLoader service and caches the
@@ -47,6 +47,6 @@ LoadError.prototype.retryLoad = function() {
  *
  * @protected
  */
-LoadError.prototype._invokeAndCache = function(method, ...args) {
+LoadError.prototype._invokeAndCache = function (method, ...args) {
   return this._retry || (this._retry = this.loader[method](...args));
-}
+};

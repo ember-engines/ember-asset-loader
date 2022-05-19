@@ -3,6 +3,6 @@
 module.exports = {
   env: {
     node: true,
-    mocha: true
-  }
+    mocha: true,
+  },
 };

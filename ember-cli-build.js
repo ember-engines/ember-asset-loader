@@ -3,11 +3,11 @@
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {
     'ember-cli-babel': {
       // Needed because ember-maybe-import-regenerator uses Promise
-      includePolyfill: (EmberAddon.env() === 'test'),
+      includePolyfill: EmberAddon.env() === 'test',
     },
   });
 

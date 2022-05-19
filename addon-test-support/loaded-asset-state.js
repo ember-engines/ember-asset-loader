@@ -84,7 +84,7 @@ export function getLoadedAssetState() {
   return {
     requireEntries: Object.keys(self.requirejs.entries),
     scripts: getAll('script'),
-    links: getAll('link')
+    links: getAll('link'),
   };
 }
 
@@ -98,7 +98,7 @@ export function cacheLoadedAssetState() {
   ({
     requireEntries: cachedRequireEntries,
     scripts: cachedScriptTags,
-    links: cachedLinkTags
+    links: cachedLinkTags,
   } = getLoadedAssetState());
 }
 
@@ -112,10 +112,14 @@ export function resetLoadedAssetState() {
   const {
     requireEntries: currentRequireEntries,
     scripts: currentScriptTags,
-    links: currentLinkTags
+    links: currentLinkTags,
   } = getLoadedAssetState();
 
-  compareAndIterate(cachedRequireEntries, currentRequireEntries, resetRequireEntry);
+  compareAndIterate(
+    cachedRequireEntries,
+    currentRequireEntries,
+    resetRequireEntry
+  );
   compareAndIterate(cachedScriptTags, currentScriptTags, removeNode);
   compareAndIterate(cachedLinkTags, currentLinkTags, removeNode);
 }

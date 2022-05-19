@@ -6,6 +6,6 @@ module.exports = ManifestGenerator.extend({
 
   manifestOptions: Object.freeze({
     bundlesLocation: 'test-dist',
-    supportedTypes: [ 'js', 'css' ]
-  })
+    supportedTypes: ['js', 'css'],
+  }),
 });

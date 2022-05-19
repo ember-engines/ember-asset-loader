@@ -3,14 +3,16 @@
 import { module, test } from 'qunit';
 import require from 'require';
 
-module('Unit | asset-manifest', function(hooks) {
-  hooks.beforeEach(function() {
+module('Unit | asset-manifest', function (hooks) {
+  hooks.beforeEach(function () {
     resetModules();
-    this.originalNodeModule = requirejs.entries['dummy/config/node-asset-manifest'];
+    this.originalNodeModule =
+      requirejs.entries['dummy/config/node-asset-manifest'];
   });
 
-  hooks.afterEach(function() {
-    requirejs.entries['dummy/config/node-asset-manifest'] = this.originalNodeModule;
+  hooks.afterEach(function () {
+    requirejs.entries['dummy/config/node-asset-manifest'] =
+      this.originalNodeModule;
     resetModules();
   });
 
@@ -19,7 +21,7 @@ module('Unit | asset-manifest', function(hooks) {
     requirejs.unsee('dummy/config/asset-manifest');
   }
 
-  test('node-asset-manifest is generated properly', function(assert) {
+  test('node-asset-manifest is generated properly', function (assert) {
     const nodeManifest = require('dummy/config/node-asset-manifest').default;
     delete requirejs.entries['dummy/config/node-asset-manifest'];
 
@@ -29,30 +31,43 @@ module('Unit | asset-manifest', function(hooks) {
     assert.deepEqual(nodeManifest, manifest);
   });
 
-  test('loads the node-asset-manifest if present', function(assert) {
+  test('loads the node-asset-manifest if present', function (assert) {
     const replacementModule = {};
-    define('dummy/config/node-asset-manifest', () => ({ default: replacementModule}));
+    define('dummy/config/node-asset-manifest', () => ({
+      default: replacementModule,
+    }));
 
-    assert.strictEqual(require('dummy/config/asset-manifest').default, replacementModule);
+    assert.strictEqual(
+      require('dummy/config/asset-manifest').default,
+      replacementModule
+    );
   });
 
-  test('loads the manifest from the meta tag if available', function(assert) {
+  test('loads the manifest from the meta tag if available', function (assert) {
     delete requirejs.entries['dummy/config/node-asset-manifest'];
 
-    const meta = document.querySelector('meta[name="dummy/config/asset-manifest"]');
+    const meta = document.querySelector(
+      'meta[name="dummy/config/asset-manifest"]'
+    );
     const metaContent = meta.getAttribute('content');
     meta.setAttribute('content', '{"derp":"herp"}');
-    assert.deepEqual(require('dummy/config/asset-manifest').default, { derp: 'herp' });
+    assert.deepEqual(require('dummy/config/asset-manifest').default, {
+      derp: 'herp',
+    });
     meta.setAttribute('content', metaContent);
   });
 
-  test('throws an error if unable to load the manifest', function(assert) {
+  test('throws an error if unable to load the manifest', function (assert) {
     delete requirejs.entries['dummy/config/node-asset-manifest'];
 
-    const meta = document.querySelector('meta[name="dummy/config/asset-manifest"]');
+    const meta = document.querySelector(
+      'meta[name="dummy/config/asset-manifest"]'
+    );
     const metaContent = meta.getAttribute('content');
     meta.setAttribute('content', 'herp');
-    assert.throws(() => assert.deepEqual(require('dummy/config/asset-manifest').default, {}));
+    assert.throws(() =>
+      assert.deepEqual(require('dummy/config/asset-manifest').default, {})
+    );
     meta.setAttribute('content', metaContent);
   });
 });

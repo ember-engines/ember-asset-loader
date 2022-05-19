@@ -24,10 +24,10 @@ function waitFor(checkerFn, timeout = 1000) {
   });
 }
 
-module('Acceptance | asset-load', function(hooks) {
+module('Acceptance | asset-load', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('visiting a route which loads a bundle', async function(assert) {
+  test('visiting a route which loads a bundle', async function (assert) {
     assert.expect(7);
 
     const container = document.getElementById('ember-testing');
@@ -43,13 +43,20 @@ module('Acceptance | asset-load', function(hooks) {
     assert.equal(currentRouteName(), 'index', 'transitioned ');
 
     const testScriptText = container.querySelector('h2').innerText;
-    assert.equal(testScriptText, 'Test script loaded!', 'test script was executed');
+    assert.equal(
+      testScriptText,
+      'Test script loaded!',
+      'test script was executed'
+    );
 
     const routeText = container.querySelector('h1').innerText;
     assert.equal(routeText, 'Welcome!', 'route was loaded correctly');
 
     containerText = container.innerText;
-    assert.ok(containerText.indexOf(testScriptText) < containerText.indexOf(routeText), 'test script was executed before route load');
+    assert.ok(
+      containerText.indexOf(testScriptText) < containerText.indexOf(routeText),
+      'test script was executed before route load'
+    );
 
     return waitFor(() => {
       const containerStyle = window.getComputedStyle(container);
@@ -61,12 +68,20 @@ module('Acceptance | asset-load', function(hooks) {
       })
       .then(() => {
         const containerStyle = window.getComputedStyle(container);
-        assert.notEqual(containerStyle.backgroundColor, originalBackgroundColor, 'background color is different after css load');
-        assert.notEqual(containerStyle.color, originalColor, 'color is different after css load');
+        assert.notEqual(
+          containerStyle.backgroundColor,
+          originalBackgroundColor,
+          'background color is different after css load'
+        );
+        assert.notEqual(
+          containerStyle.color,
+          originalColor,
+          'color is different after css load'
+        );
       });
   });
 
-  test('visiting a route which fails to load a script removes the node from DOM', async function(assert) {
+  test('visiting a route which fails to load a script removes the node from DOM', async function (assert) {
     assert.expect(2);
 
     const getScript = () => document.querySelector('script[src="foo.js"]');

@@ -18,6 +18,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
+    'plugin:prettier/recommended',
   ],
   env: {
     browser: true,
@@ -25,7 +26,7 @@ module.exports = {
   rules: {
     'ember/new-module-imports': 'off',
     'ember/no-get': 'off',
-    'ember/no-private-routing-service': 'off'
+    'ember/no-private-routing-service': 'off',
   },
   overrides: [
     // node files
@@ -54,13 +55,19 @@ module.exports = {
       extends: ['plugin:node/recommended'],
       rules: {
         'ember/avoid-leaking-state-in-ember-objects': 'off',
-        'node/no-extraneous-require': ['error', {
-          allowModules: ['ember-source-channel-url']
-        }],
-        'node/no-unpublished-require': ['error', {
-          allowModules: ['ember-cli']
-        }]
-      }
+        'node/no-extraneous-require': [
+          'error',
+          {
+            allowModules: ['ember-source-channel-url'],
+          },
+        ],
+        'node/no-unpublished-require': [
+          'error',
+          {
+            allowModules: ['ember-cli'],
+          },
+        ],
+      },
     },
   ],
 };

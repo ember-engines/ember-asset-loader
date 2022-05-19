@@ -3,7 +3,9 @@ import Ember from 'ember';
 let hasRan = false;
 
 function initialize() {
-  if (hasRan) { return; }
+  if (hasRan) {
+    return;
+  }
 
   hasRan = true;
 
@@ -29,15 +31,17 @@ function initialize() {
 
     _handlerResolver(original) {
       return (name) => {
-        return this.get('assetLoader').loadBundle('test').then(() => {
-          return original(name);
-        });
+        return this.get('assetLoader')
+          .loadBundle('test')
+          .then(() => {
+            return original(name);
+          });
       };
-    }
+    },
   });
 }
 
 export default {
   name: 'router-ext',
-  initialize
+  initialize,
 };

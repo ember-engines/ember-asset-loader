@@ -1,6 +1,7 @@
 import RSVP from 'rsvp';
 
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+const isBrowser =
+  typeof window !== 'undefined' && typeof document !== 'undefined';
 
 /**
  * Creates a DOM element with the specified onload and onerror handlers.

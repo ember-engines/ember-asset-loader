@@ -13,19 +13,24 @@ module.exports = {
    *
    * @override
    */
-  treeForApp: function() {
+  treeForApp: function () {
     let tree = this._super.treeForApp.apply(this, arguments);
     const app = findHost(this);
 
-    if (app && app.options && app.options.assetLoader && app.options.assetLoader.noManifest) {
+    if (
+      app &&
+      app.options &&
+      app.options.assetLoader &&
+      app.options.assetLoader.noManifest
+    ) {
       tree = funnel(tree, {
         exclude: [
           'config/asset-manifest.js',
-          'instance-initializers/load-asset-manifest.js'
-        ]
+          'instance-initializers/load-asset-manifest.js',
+        ],
       });
     }
 
     return tree;
-  }
+  },
 };

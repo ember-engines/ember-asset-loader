@@ -17,7 +17,10 @@ export default class AssetLoadError extends LoadError {
    * @param {Error} error
    */
   constructor(assetLoader, asset, error) {
-    super(`The ${asset.type} asset with uri "${asset.uri}" failed to load with the error: ${error}.`, assetLoader);
+    super(
+      `The ${asset.type} asset with uri "${asset.uri}" failed to load with the error: ${error}.`,
+      assetLoader
+    );
     this.name = 'AssetLoadError';
     this.asset = asset;
     this.originalError = error;

@@ -20,7 +20,7 @@ export default nodeLoader(function css(uri) {
     }
 
     // Try using the default onload/onerror handlers...
-    const link = createLoadElement('link', resolve, function(error) {
+    const link = createLoadElement('link', resolve, function (error) {
       if (this.parentNode) {
         this.parentNode.removeChild(this);
       }

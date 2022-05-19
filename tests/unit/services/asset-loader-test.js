@@ -10,44 +10,53 @@ function shouldHappen(assert) {
   return () => assert.ok(true, 'callback should happen');
 }
 
-module('Unit | Service | asset-loader', function(hooks) {
+module('Unit | Service | asset-loader', function (hooks) {
   setupTest(hooks);
 
-  test('loadBundle() - throws an error if no asset manifest has been provided', function(assert) {
+  test('loadBundle() - throws an error if no asset manifest has been provided', function (assert) {
     const service = this.owner.lookup('service:asset-loader');
 
-    assert.throws(() => service.loadBundle('blog'), /No bundle with name "blog" exists./);
+    assert.throws(
+      () => service.loadBundle('blog'),
+      /No bundle with name "blog" exists./
+    );
   });
 
-  test('loadBundle() - throws an error if asset manifest does not list any bundles', function(assert) {
+  test('loadBundle() - throws an error if asset manifest does not list any bundles', function (assert) {
     const service = this.owner.lookup('service:asset-loader');
 
     service.pushManifest({});
 
-    assert.throws(() => service.loadBundle('blog'), /No bundle with name "blog" exists./);
+    assert.throws(
+      () => service.loadBundle('blog'),
+      /No bundle with name "blog" exists./
+    );
   });
 
-  test('loadBundle() - throws an error if asset manifest does not contain the bundle', function(assert) {
+  test('loadBundle() - throws an error if asset manifest does not contain the bundle', function (assert) {
     const service = this.owner.lookup('service:asset-loader');
 
     service.pushManifest({
       bundles: {
-        chat: {}
-      }
+        chat: {},
+      },
     });
 
-    assert.throws(() => service.loadBundle('blog'), /No bundle with name "blog" exists in the asset manifest./);
+    assert.throws(
+      () => service.loadBundle('blog'),
+      /No bundle with name "blog" exists in the asset manifest./
+    );
   });
 
-  test('loadBundle() - returns a promise that resolves with the name of the loaded bundle', function(assert) {
+  test('loadBundle() - returns a promise that resolves with the name of the loaded bundle', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
 
     service.pushManifest({
       bundles: {
-        blog: {}
-      }
+        blog: {},
+      },
     });
 
     return service.loadBundle('blog').then((bundle) => {
@@ -55,15 +64,15 @@ module('Unit | Service | asset-loader', function(hooks) {
     });
   });
 
-  test('loadBundle() - subsequent calls return the same promise', function(assert) {
+  test('loadBundle() - subsequent calls return the same promise', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
 
     service.pushManifest({
       bundles: {
-        blog: {}
-      }
+        blog: {},
+      },
     });
 
     const firstCall = service.loadBundle('blog');
@@ -72,7 +81,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     assert.strictEqual(firstCall, secondCall);
   });
 
-  test('loadBundle() - rejects with a BundleLoadError', function(assert) {
+  test('loadBundle() - rejects with a BundleLoadError', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -80,25 +89,28 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.pushManifest({
       bundles: {
         blog: {
-          assets: [
-            { type: 'fail', uri: 'someuri' }
-          ]
-        }
-      }
+          assets: [{ type: 'fail', uri: 'someuri' }],
+        },
+      },
     });
 
     service.defineLoader('fail', () => RSVP.reject('rejected'));
 
-    return service.loadBundle('blog').then(
-      shouldNotHappen(assert),
-      (error) => {
-        assert.equal(error.errors.length, 1, 'has an array of the errors causing the load to fail.');
-        assert.equal(error.toString(), 'BundleLoadError: The bundle "blog" failed to load.', 'error message contains correct info.');
-      }
-    );
+    return service.loadBundle('blog').then(shouldNotHappen(assert), (error) => {
+      assert.equal(
+        error.errors.length,
+        1,
+        'has an array of the errors causing the load to fail.'
+      );
+      assert.equal(
+        error.toString(),
+        'BundleLoadError: The bundle "blog" failed to load.',
+        'error message contains correct info.'
+      );
+    });
   });
 
-  test('loadBundle() - a rejection allows retrying the load', function(assert) {
+  test('loadBundle() - a rejection allows retrying the load', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -106,30 +118,25 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.pushManifest({
       bundles: {
         blog: {
-          assets: [
-            { type: 'fail', uri: 'someuri' }
-          ]
-        }
-      }
+          assets: [{ type: 'fail', uri: 'someuri' }],
+        },
+      },
     });
 
     service.defineLoader('fail', () => RSVP.reject('rejected'));
 
-    return service.loadBundle('blog').then(
-      shouldNotHappen(assert),
-      (error) => {
+    return service
+      .loadBundle('blog')
+      .then(shouldNotHappen(assert), (error) => {
         assert.ok(true, 'first error occured');
         return error.retryLoad();
-      }
-    ).then(
-      shouldNotHappen(assert),
-      () => {
+      })
+      .then(shouldNotHappen(assert), () => {
         assert.ok(true, 'retry error occured');
-      }
-    );
+      });
   });
 
-  test('loadBundle() - subsequent call after rejection returns a new promise', function(assert) {
+  test('loadBundle() - subsequent call after rejection returns a new promise', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -138,33 +145,36 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.pushManifest({
       bundles: {
         blog: {
-          assets: [
-            { type: 'fail', uri: 'someuri' }
-          ]
-        }
-      }
+          assets: [{ type: 'fail', uri: 'someuri' }],
+        },
+      },
     });
 
     service.defineLoader('fail', () => RSVP.reject('rejected'));
 
-    return service.loadBundle('blog').then(
-      shouldNotHappen(assert),
-      (error) => firstRetry = error.retryLoad()
-    ).then(
-      shouldNotHappen(assert),
-      () => {
+    return service
+      .loadBundle('blog')
+      .then(
+        shouldNotHappen(assert),
+        (error) => (firstRetry = error.retryLoad())
+      )
+      .then(shouldNotHappen(assert), () => {
         service.defineLoader('fail', () => RSVP.resolve());
 
         const serviceRetry = service.loadBundle('blog');
 
-        assert.notStrictEqual(firstRetry, serviceRetry, 'calling loadAsset again returns other result');
+        assert.notStrictEqual(
+          firstRetry,
+          serviceRetry,
+          'calling loadAsset again returns other result'
+        );
 
         return serviceRetry;
-      }
-    ).then(shouldHappen(assert), shouldNotHappen(assert));
+      })
+      .then(shouldHappen(assert), shouldNotHappen(assert));
   });
 
-  test('loadBundle() - retrying a load twice returns the same promise', function(assert) {
+  test('loadBundle() - retrying a load twice returns the same promise', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -172,38 +182,47 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.pushManifest({
       bundles: {
         blog: {
-          assets: [
-            { type: 'fail', uri: 'someuri' }
-          ]
-        }
-      }
+          assets: [{ type: 'fail', uri: 'someuri' }],
+        },
+      },
     });
 
     service.defineLoader('fail', () => RSVP.reject('rejected'));
 
-    return service.loadBundle('blog').then(
-      shouldNotHappen(assert),
-      (error) => {
+    return service
+      .loadBundle('blog')
+      .then(shouldNotHappen(assert), (error) => {
         const firstRetry = error.retryLoad();
         const secondRetry = error.retryLoad();
         const serviceRetry = service.loadBundle('blog');
 
-        assert.strictEqual(firstRetry, secondRetry, 'multiple retries produce same results');
-        assert.strictEqual(firstRetry, serviceRetry, 'calling loadBundle again returns the retry result');
+        assert.strictEqual(
+          firstRetry,
+          secondRetry,
+          'multiple retries produce same results'
+        );
+        assert.strictEqual(
+          firstRetry,
+          serviceRetry,
+          'calling loadBundle again returns the retry result'
+        );
 
         return firstRetry;
-      }
-    ).catch(noop);
+      })
+      .catch(noop);
   });
 
-  test('loadAsset() - throws an error if there is no loader defined for the asset type', function(assert) {
+  test('loadAsset() - throws an error if there is no loader defined for the asset type', function (assert) {
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'crazy-type', uri: 'someuri' };
 
-    assert.throws(() => service.loadAsset(asset), /No loader for assets of type "crazy-type" defined./);
+    assert.throws(
+      () => service.loadAsset(asset),
+      /No loader for assets of type "crazy-type" defined./
+    );
   });
 
-  test('loadAsset() - returns a promise that resolves with the loaded asset information', function(assert) {
+  test('loadAsset() - returns a promise that resolves with the loaded asset information', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -216,7 +235,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     });
   });
 
-  test('loadAsset() - subsequent calls return the same promise', function(assert) {
+  test('loadAsset() - subsequent calls return the same promise', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -230,7 +249,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     assert.strictEqual(firstCall, secondCall);
   });
 
-  test('loadAsset() - rejects with an AssetLoadPromise', function(assert) {
+  test('loadAsset() - rejects with an AssetLoadPromise', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -239,11 +258,14 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.defineLoader('test', () => RSVP.reject('some error'));
 
     return service.loadAsset(asset).then(shouldNotHappen(assert), (error) => {
-      assert.equal(error.toString(), 'AssetLoadError: The test asset with uri "someuri" failed to load with the error: some error.');
+      assert.equal(
+        error.toString(),
+        'AssetLoadError: The test asset with uri "someuri" failed to load with the error: some error.'
+      );
     });
   });
 
-  test('loadAsset() - a rejection allows retrying the load', function(assert) {
+  test('loadAsset() - a rejection allows retrying the load', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -251,21 +273,18 @@ module('Unit | Service | asset-loader', function(hooks) {
 
     service.defineLoader('test', () => RSVP.reject('some error'));
 
-    return service.loadAsset(asset).then(
-      shouldNotHappen(assert),
-      (error) => {
+    return service
+      .loadAsset(asset)
+      .then(shouldNotHappen(assert), (error) => {
         assert.ok(true, 'first error occured');
         return error.retryLoad();
-      }
-    ).then(
-      shouldNotHappen(assert),
-      () => {
+      })
+      .then(shouldNotHappen(assert), () => {
         assert.ok(true, 'retry error occured');
-      }
-    );
+      });
   });
 
-  test('loadAsset() - subsequent call after rejection returns a new promise', function(assert) {
+  test('loadAsset() - subsequent call after rejection returns a new promise', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -274,24 +293,29 @@ module('Unit | Service | asset-loader', function(hooks) {
 
     service.defineLoader('test', () => RSVP.reject('some error'));
 
-    return service.loadAsset(asset).then(
-      shouldNotHappen(assert),
-      (error) => firstRetry = error.retryLoad()
-    ).then(
-      shouldNotHappen(assert),
-      () => {
+    return service
+      .loadAsset(asset)
+      .then(
+        shouldNotHappen(assert),
+        (error) => (firstRetry = error.retryLoad())
+      )
+      .then(shouldNotHappen(assert), () => {
         service.defineLoader('test', () => RSVP.resolve());
 
         const serviceRetry = service.loadAsset(asset);
 
-        assert.notStrictEqual(firstRetry, serviceRetry, 'calling loadAsset again returns other result');
+        assert.notStrictEqual(
+          firstRetry,
+          serviceRetry,
+          'calling loadAsset again returns other result'
+        );
 
         return serviceRetry;
-      }
-    ).then(shouldHappen(assert), shouldNotHappen(assert));
+      })
+      .then(shouldHappen(assert), shouldNotHappen(assert));
   });
 
-  test('loadAsset() - retrying a load twice returns the same promise', function(assert) {
+  test('loadAsset() - retrying a load twice returns the same promise', function (assert) {
     assert.expect(2);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -299,40 +323,52 @@ module('Unit | Service | asset-loader', function(hooks) {
 
     service.defineLoader('test', () => RSVP.reject('some error'));
 
-    return service.loadAsset(asset).then(
-      shouldNotHappen(assert),
-      (error) => {
+    return service
+      .loadAsset(asset)
+      .then(shouldNotHappen(assert), (error) => {
         const firstRetry = error.retryLoad();
         const secondRetry = error.retryLoad();
         const serviceRetry = service.loadAsset(asset);
 
-        assert.strictEqual(firstRetry, secondRetry, 'multiple retries produce same results');
-        assert.strictEqual(firstRetry, serviceRetry, 'calling loadBundle again returns the retry result');
+        assert.strictEqual(
+          firstRetry,
+          secondRetry,
+          'multiple retries produce same results'
+        );
+        assert.strictEqual(
+          firstRetry,
+          serviceRetry,
+          'calling loadBundle again returns the retry result'
+        );
 
         return firstRetry;
-      }
-    ).catch(noop);
+      })
+      .catch(noop);
   });
 
-  test('loadAsset() - js - handles successful load', function(assert) {
+  test('loadAsset() - js - handles successful load', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'js', uri: '/unit-test.js' };
 
-    return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+    return service
+      .loadAsset(asset)
+      .then(shouldHappen(assert), shouldNotHappen(assert));
   });
 
-  test('loadAsset() - js - handles failed load', function(assert) {
+  test('loadAsset() - js - handles failed load', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'js', uri: '/unit-test.jsss' };
 
-    return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+    return service
+      .loadAsset(asset)
+      .then(shouldNotHappen(assert), shouldHappen(assert));
   });
 
-  test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function(assert) {
+  test('loadAsset() - js - does not insert additional script tag if asset is in DOM already', function (assert) {
     assert.expect(1);
 
     if (!document.querySelector('script[src="/unit-test.js"]')) {
@@ -351,7 +387,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     });
   });
 
-  test('loadAsset() - js - sets async false to try to guarantee execution order', function(assert) {
+  test('loadAsset() - js - sets async false to try to guarantee execution order', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -363,16 +399,18 @@ module('Unit | Service | asset-loader', function(hooks) {
     });
   });
 
-  test('loadAsset() - css - handles successful load', function(assert) {
+  test('loadAsset() - css - handles successful load', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
     const asset = { type: 'css', uri: '/unit-test.css' };
 
-    return service.loadAsset(asset).then(shouldHappen(assert), shouldNotHappen(assert));
+    return service
+      .loadAsset(asset)
+      .then(shouldHappen(assert), shouldNotHappen(assert));
   });
 
-  test('loadAsset() - css - handles failed load', function(assert) {
+  test('loadAsset() - css - handles failed load', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -382,13 +420,17 @@ module('Unit | Service | asset-loader', function(hooks) {
     // non-Chrome browsers to either resolve or reject (they should do something).
     var isChrome = !!window.chrome && window.navigator.vendor === 'Google Inc.';
     if (isChrome) {
-      return service.loadAsset(asset).then(shouldNotHappen(assert), shouldHappen(assert));
+      return service
+        .loadAsset(asset)
+        .then(shouldNotHappen(assert), shouldHappen(assert));
     } else {
-      return service.loadAsset(asset).then(shouldHappen(assert), shouldHappen(assert));
+      return service
+        .loadAsset(asset)
+        .then(shouldHappen(assert), shouldHappen(assert));
     }
   });
 
-  test('loadAsset() - css - does not insert additional link tag if asset is in DOM already', function(assert) {
+  test('loadAsset() - css - does not insert additional link tag if asset is in DOM already', function (assert) {
     assert.expect(1);
 
     if (!document.querySelector('link[href="/unit-test.css"]')) {
@@ -407,7 +449,7 @@ module('Unit | Service | asset-loader', function(hooks) {
     });
   });
 
-  test('defineLoader() - overwrites existing asset loader types', function(assert) {
+  test('defineLoader() - overwrites existing asset loader types', function (assert) {
     assert.expect(1);
 
     const service = this.owner.lookup('service:asset-loader');
@@ -416,21 +458,23 @@ module('Unit | Service | asset-loader', function(hooks) {
     service.defineLoader('test', () => RSVP.reject());
     service.defineLoader('test', () => RSVP.resolve());
 
-    return service.loadAsset(asset).then(
-      () => assert.ok(true),
-      shouldNotHappen(assert)
-    );
+    return service
+      .loadAsset(asset)
+      .then(() => assert.ok(true), shouldNotHappen(assert));
   });
 
-  test('pushManifest() - throws an error when merging two manifests with the same bundle', function(assert) {
+  test('pushManifest() - throws an error when merging two manifests with the same bundle', function (assert) {
     const service = this.owner.lookup('service:asset-loader');
     const manifest = {
       bundles: {
-        blog: {}
-      }
+        blog: {},
+      },
     };
 
     service.pushManifest(manifest);
-    assert.throws(() => service.pushManifest(manifest), /The bundle "blog" already exists./);
+    assert.throws(
+      () => service.pushManifest(manifest),
+      /The bundle "blog" already exists./
+    );
   });
 });

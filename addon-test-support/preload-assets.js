@@ -16,7 +16,9 @@ export default function preloadAssets(manifest) {
   const loader = AssetLoader.create();
   loader.pushManifest(manifest);
 
-  const bundlePromises = Object.keys(manifest.bundles).map((bundle) => loader.loadBundle(bundle));
+  const bundlePromises = Object.keys(manifest.bundles).map((bundle) =>
+    loader.loadBundle(bundle)
+  );
   const allBundles = RSVP.all(bundlePromises);
 
   return Test.resolve(allBundles);

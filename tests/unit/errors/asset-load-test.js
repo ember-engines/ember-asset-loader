@@ -34,7 +34,7 @@ module('Unit | Error | asset-load', function (hooks) {
       this.asset,
       this.originalError
     );
-    assert.equal(
+    assert.strictEqual(
       error.toString(),
       'AssetLoadError: The js asset with uri "some-js-file.js" failed to load with the error: Error: some error.'
     );
@@ -46,7 +46,7 @@ module('Unit | Error | asset-load', function (hooks) {
       this.asset,
       this.originalError
     );
-    assert.equal(
+    assert.strictEqual(
       error.retryLoad(),
       'Loaded js asset with uri "some-js-file.js".'
     );

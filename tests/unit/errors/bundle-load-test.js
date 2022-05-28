@@ -22,7 +22,7 @@ module('Unit | Error | bundle-load', function (hooks) {
     );
     assert.ok(error instanceof Error, 'BundleLoadError inherits Error');
     assert.ok(error.stack, 'stack is preserved');
-    assert.equal(error.bundleName, this.bundleName, 'bundleName is set');
+    assert.strictEqual(error.bundleName, this.bundleName, 'bundleName is set');
     assert.strictEqual(error.errors, this.errors, 'errors is set');
   });
 
@@ -32,7 +32,7 @@ module('Unit | Error | bundle-load', function (hooks) {
       this.bundleName,
       this.errors
     );
-    assert.equal(
+    assert.strictEqual(
       error.toString(),
       'BundleLoadError: The bundle "herp-de-derp" failed to load.'
     );
@@ -44,6 +44,6 @@ module('Unit | Error | bundle-load', function (hooks) {
       this.bundleName,
       this.errors
     );
-    assert.equal(error.retryLoad(), 'Loaded the bundle "herp-de-derp".');
+    assert.strictEqual(error.retryLoad(), 'Loaded the bundle "herp-de-derp".');
   });
 });

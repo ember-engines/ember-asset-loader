@@ -60,7 +60,7 @@ module('Unit | Service | asset-loader', function (hooks) {
     });
 
     return service.loadBundle('blog').then((bundle) => {
-      assert.equal(bundle, 'blog');
+      assert.strictEqual(bundle, 'blog');
     });
   });
 
@@ -97,12 +97,12 @@ module('Unit | Service | asset-loader', function (hooks) {
     service.defineLoader('fail', () => RSVP.reject('rejected'));
 
     return service.loadBundle('blog').then(shouldNotHappen(assert), (error) => {
-      assert.equal(
+      assert.strictEqual(
         error.errors.length,
         1,
         'has an array of the errors causing the load to fail.'
       );
-      assert.equal(
+      assert.strictEqual(
         error.toString(),
         'BundleLoadError: The bundle "blog" failed to load.',
         'error message contains correct info.'
@@ -258,7 +258,7 @@ module('Unit | Service | asset-loader', function (hooks) {
     service.defineLoader('test', () => RSVP.reject('some error'));
 
     return service.loadAsset(asset).then(shouldNotHappen(assert), (error) => {
-      assert.equal(
+      assert.strictEqual(
         error.toString(),
         'AssetLoadError: The test asset with uri "someuri" failed to load with the error: some error.'
       );
@@ -383,7 +383,7 @@ module('Unit | Service | asset-loader', function (hooks) {
 
     return service.loadAsset(asset).then(() => {
       const newNumScripts = document.querySelectorAll('script').length;
-      assert.equal(newNumScripts, numScripts);
+      assert.strictEqual(newNumScripts, numScripts);
     });
   });
 
@@ -395,7 +395,7 @@ module('Unit | Service | asset-loader', function (hooks) {
 
     return service.loadAsset(asset).then(() => {
       const script = document.querySelector('script[src="/unit-test.js"]');
-      assert.equal(script.async, false);
+      assert.false(script.async);
     });
   });
 
@@ -445,7 +445,7 @@ module('Unit | Service | asset-loader', function (hooks) {
 
     return service.loadAsset(asset).then(() => {
       const newNumLinks = document.querySelectorAll('link').length;
-      assert.equal(newNumLinks, numLinks);
+      assert.strictEqual(newNumLinks, numLinks);
     });
   });
 

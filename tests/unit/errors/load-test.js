@@ -9,13 +9,13 @@ module('Unit | Error | load', function () {
 
     assert.ok(error instanceof Error, 'LoadError inherits Error');
     assert.ok(error.stack, 'stack is preserved');
-    assert.equal(error.message, message, 'message is set');
+    assert.strictEqual(error.message, message, 'message is set');
     assert.strictEqual(error.loader, loader, 'loader is set');
   });
 
   test('toString() - has correct name and message', function (assert) {
     const error = new LoadError('herp-de-derp');
-    assert.equal(error.toString(), 'LoadError: herp-de-derp');
+    assert.strictEqual(error.toString(), 'LoadError: herp-de-derp');
   });
 
   test('retryLoad() - throws an error', function (assert) {

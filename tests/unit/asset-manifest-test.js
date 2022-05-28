@@ -58,6 +58,8 @@ module('Unit | asset-manifest', function (hooks) {
   });
 
   test('throws an error if unable to load the manifest', function (assert) {
+    assert.expect(1);
+
     delete requirejs.entries['dummy/config/node-asset-manifest'];
 
     const meta = document.querySelector(

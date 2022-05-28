@@ -36,21 +36,25 @@ module('Acceptance | asset-load', function (hooks) {
     const originalColor = originalContainerStyle.color;
 
     let containerText = container.innerText;
-    assert.equal(containerText, '', 'test container is empty before load');
+    assert.strictEqual(
+      containerText,
+      '',
+      'test container is empty before load'
+    );
 
     await visit('/');
 
-    assert.equal(currentRouteName(), 'index', 'transitioned ');
+    assert.strictEqual(currentRouteName(), 'index', 'transitioned ');
 
     const testScriptText = container.querySelector('h2').innerText;
-    assert.equal(
+    assert.strictEqual(
       testScriptText,
       'Test script loaded!',
       'test script was executed'
     );
 
     const routeText = container.querySelector('h1').innerText;
-    assert.equal(routeText, 'Welcome!', 'route was loaded correctly');
+    assert.strictEqual(routeText, 'Welcome!', 'route was loaded correctly');
 
     containerText = container.innerText;
     assert.ok(
@@ -88,7 +92,7 @@ module('Acceptance | asset-load', function (hooks) {
 
     await visit('asset-error');
 
-    assert.equal(currentRouteName(), 'asset-error', 'transitioned ');
+    assert.strictEqual(currentRouteName(), 'asset-error', 'transitioned ');
 
     return waitFor(() => !getScript())
       .catch((reason) => {

@@ -31,7 +31,7 @@ jobs:
         run: yarn lint
 
       - name: Run Tests
-        run: yarn test
+        run: yarn test:ember
 
   floating:
     name: "Floating Dependencies"
@@ -48,7 +48,7 @@ jobs:
         run: yarn install --no-lockfile
 
       - name: Run Tests
-        run: yarn test
+        run: yarn test:ember
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -61,14 +61,17 @@ jobs:
         try-scenario:
           - ember-lts-3.4
           - ember-lts-3.8
-#          - ember-lts-3.24
-#          - ember-lts-3.28
-#          - ember-release
-#          - ember-beta
-#          - ember-canary
-#          - ember-classic
-#          - embroider-safe
-#          - embroider-optimized
+          - ember-lts-3.12
+          - ember-lts-3.16
+          - ember-lts-3.20
+          - ember-lts-3.24
+          - ember-lts-3.28
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - ember-classic
+          - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3

@@ -12,6 +12,14 @@ Provides experimental support for the [Asset Manifest RFC](https://github.com/em
 * Ember CLI v3.24 or above
 * Node.js v14 or above
 
+
+## Installation
+
+```
+ember install ember-asset-loader
+```
+
+
 ## Usage
 
 Ember Asset Loader does three primary things:
@@ -171,28 +179,12 @@ already in the browser.
 _Note: If you use QUnit, it may be worthwhile to turn on the [`noglobals` config option](https://api.qunitjs.com/QUnit.config/),
 to help catch mutated global state._
 
-## Installation
 
-* `git clone https://github.com/ember-engines/ember-asset-loader`
-* `cd ember-asset-loader`
-* `npm install`
-* `bower install`
+## Contributing
 
-## Running
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
-* `ember serve`
-* Visit the tests at [http://localhost:4200/tests](http://localhost:4200/tests).
 
-## Running Tests
+## License
 
-One of three options:
-
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+This project is licensed under the [MIT License](LICENSE.md).

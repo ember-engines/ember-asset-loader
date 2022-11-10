@@ -1,11 +1,10 @@
-/* eslint-env node */
 'use strict';
 
 const funnel = require('broccoli-funnel');
 const findHost = require('./lib/utils/find-host');
 
 module.exports = {
-  name: 'ember-asset-loader',
+  name: require('./package').name,
 
   /**
    * If the app has specified `noManifest` to be generated, then we don't
